@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const collegeModel = require("../models/collegeModel");
-const interModel = require("../models/internModel");
 
 const isValidObjectId =  (objectId) => { return mongoose.Types.ObjectId.isValid(objectId) }
 
