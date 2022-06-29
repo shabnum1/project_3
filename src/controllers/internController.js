@@ -57,34 +57,27 @@ const createIntern = async (req, res) => {
 
 }
 
-const getCollegeDetails = async (req,res) => {
+const getCollegeDetails = async (req, res) => {
     try {
-        const collegeName = req.query.collegeName
+        const data = req.query.collegeName;
+        if (!data)
+            return res.status(400).send({ status: false, msg: 'please enter key as collegeName and define some value' });
 
-        if (Object.keys(req.query).length === 0) return res.status(400).send({ status: false, msg: "All fields are empty!" })
+        const college = await collegeModel.findOne({ name: data });
 
-        if (!collegeName)  return res.status(400).send({ status: false, msg: "Key college name is not correct!" })
+        if (!college) return res.status(404).send({ status: false, msg: 'no such college present!' })
+       
+        const intern = await internModel.find({ collegeId: college._id, isDeleted: false });
 
-       {if (collegeName || collegeName===""){
-         if (!collegeController.objectValue(collegeName)) return res.status(400).send({ status: false, msg: "Please enter the college name in anabbreviated form!" })
-}}
+        if (Object.keys(intern).length == 0) return res.status(404).send({ status: false, msg: `${data} does not have any intern` });
 
-        let intern = [] 
+        res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })
 
-        let anabbreviatedCollege = await collegeModel.findOne({ name: collegeName }).select({_id:1})
-
-        let allintern = await internModel.find({collegeId:anabbreviatedCollege})
-
-        intern.push(allintern)
-
-        return res.status(200).send({ status: true, data: anabbreviatedCollege + `intern: ${intern}` })
-
-    }
+    } 
+    
     catch (error) {
-        res.status(500).send({ status: false, msg: error.message })
+        res.status(500).send({ status: false, msg: error.message });
     }
-
-
-}
+};
 
 module.exports = { createIntern, getCollegeDetails }
