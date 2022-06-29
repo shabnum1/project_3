@@ -7,7 +7,7 @@ const createIntern = async (req, res) => {
 
     try {
 
-        const { name, email, mobile, collegeId } = req.body
+        const { name, email, mobile, collegeName } = req.body
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })
 
@@ -31,24 +31,52 @@ const createIntern = async (req, res) => {
 
         if (duplicateMobile) return res.status(400).send({ status: false, msg: "This mobile number is already used!" })
 
-        if (!objectValue(collegeId)) return res.status(400).send({ status: false, msg: "collegeId is required!" })
+        if (!objectValue(collegeName)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
 
-        if (!isValidObjectId(collegeId)) return res.status(400).send({ status: false, msg: "This collegeId is invalid!" })
+        // if (!isValidObjectId(collegeName)) return res.status(400).send({ status: false, msg: "This collegeId is invalid!" })
 
-        const validCollegeId = await collegeModel.findOne({ collegeId, isDeleted: false })
+        // const validCollegeId = await collegeModel.findOne({_id: collegeName, isDeleted: false })
 
-        if (!validCollegeId) return res.status(400).send({ status: false, msg: "This collegeId is not present in the Database!" })
+        // if (!validCollegeId) return res.status(400).send({ status: false, msg: "This collegeId is not present in the Database!" })
 
-        const internCreation = await internModel.create(req.body)
+    //     let college = await collegeModel
+    //   .findOne({ $or: [{ name: collegeName }, { fullName: collegeName }], isDeleted : false })
+    //   .select({ _id: 1 });
 
-        const intern = await internModel.findOne({email}).select({_id:0,__v:0})
+    // if (!college)
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, message: "college  not exists" });
+    // delete data.collegeName;
+    // data.collegeId = college._id;
 
-        res.status(201).send({ status: true, data: intern })
+    const validCollegeId = await collegeModel.findOne({name: collegeName, isDeleted: false })
+
+    let collegeId = validCollegeId._id 
+
+    const collegeData = {name, email, mobile, collegeId}
+
+        const internCreation = await internModel.create(collegeData)
+
+        // const intern = await internModel.findOne({email}).select({_id:0,__v:0})
+
+        return res.status(201).send({
+            status: true,
+            data: {
+                isDeleted: collegeData.isDeleted,
+                name: collegeData.name,
+                email: collegeData.email,
+                mobile: collegeData.mobile,
+                collegeId: collegeData.collegeId
+            }
+        })
     }
 
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
     }
+
+    // logo link validation is pending...don't forget to validate!
 
 }
 
