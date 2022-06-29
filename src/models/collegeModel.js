@@ -25,7 +25,7 @@ const collegeSchema = new mongoose.Schema(
             default: false
         }
 
-    }, { timestamps: true }
+    }
 
 )
 
