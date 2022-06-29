@@ -76,7 +76,7 @@ const createIntern = async (req, res) => {
         res.status(500).send({ status: false, msg: error.message })
     }
 
-    // logo link validation is pending...don't forget to validate!
+    //  NOTE ==> logo link validation is pending...don't forget to validate!
 
 }
 
