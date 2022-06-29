@@ -26,7 +26,17 @@ const createCollege = async  (req, res) => {
 
         if (duplicateName) return res.status(400).send({ status: false, msg: "This college name is already used!" })
 
-        let collegeRegex = /^[A-Za-z\s]{1,}[\.,'-]{0,1}[A-Za-z\s]{5,}$/;
+        let collegeRegex = /^[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
+
+        // let collegeRegex = /^[A-Z@~`! @#$%^&*()_=+\\\\';:\"\\/?>. <,-]*/;
+
+        // let collegeRegex = /'^[a-zA-Z]+[a-zA-Z/s/.]+[/s]*$'/;
+
+        // let collegeRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
+
+        // let collegeRegex = /^([A-Za-z][^\s,.]+[.]?\s[(]?)*(College|University|Educational|Research|Institute|Law School|School of|Academy)[^,\d]*(?=,|\d)$/
+        ;
+
 
         if (!collegeRegex.test(fullName)) return res.status(400).send({ status: false, msg: "College full name must be in characters and of atleast 5 characters long!" })
 
