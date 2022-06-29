@@ -62,7 +62,7 @@ const getCollegeDetails = async (req, res) => {
 
         if (!college) return res.status(404).send({ status: false, msg: 'no such college present!' })
 
-        const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({_id:0,__v:0,isDeleted:0})
+        const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({collegeId:0,__v:0,isDeleted:0})
 
         if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` });
 

@@ -16,7 +16,7 @@ const keyValue = (value) => {
  };
 
 const nameRegex = (value) => {
-  let nameRegex = /^[A-Za-z\s]{1,}[\]{0,1}[A-Za-z\s]{2,}$/;
+  let nameRegex = /^[A-Za-z\s]{1,}[\]{0,1}[A-Za-z\s]{1,}$/;
   if (nameRegex.test(value)) return true;
 };
 
