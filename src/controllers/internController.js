@@ -56,7 +56,7 @@ const getCollegeDetails = async (req, res) => {
     try {
         const data = req.query.collegeName;
         if (!data)
-            return res.status(400).send({ status: false, msg: 'please enter key as collegeName and define some value' });
+            return res.status(400).send({ status: false, msg: 'please enter key as collegeName and define some value!' });
 
         const college = await collegeModel.findOne({ name: data });
 
@@ -64,7 +64,7 @@ const getCollegeDetails = async (req, res) => {
 
         const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({_id:0,__v:0,isDeleted:0})
 
-        if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any intern` });
+        if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` });
 
         res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })
 
