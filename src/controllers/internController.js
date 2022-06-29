@@ -39,22 +39,22 @@ const createIntern = async (req, res) => {
 
         // if (!validCollegeId) return res.status(400).send({ status: false, msg: "This collegeId is not present in the Database!" })
 
-    //     let college = await collegeModel
-    //   .findOne({ $or: [{ name: collegeName }, { fullName: collegeName }], isDeleted : false })
-    //   .select({ _id: 1 });
+        //     let college = await collegeModel
+        //   .findOne({ $or: [{ name: collegeName }, { fullName: collegeName }], isDeleted : false })
+        //   .select({ _id: 1 });
 
-    // if (!college)
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, message: "college  not exists" });
-    // delete data.collegeName;
-    // data.collegeId = college._id;
+        // if (!college)
+        //   return res
+        //     .status(400)
+        //     .send({ status: false, message: "college  not exists" });
+        // delete data.collegeName;
+        // data.collegeId = college._id;
 
-    const validCollegeId = await collegeModel.findOne({name: collegeName, isDeleted: false })
+        const validCollegeId = await collegeModel.findOne({ name: collegeName, isDeleted: false })
 
-    let collegeId = validCollegeId._id 
+        let collegeId = validCollegeId._id
 
-    const collegeData = {name, email, mobile, collegeId}
+        const collegeData = { name, email, mobile, collegeId }
 
         const internCreation = await internModel.create(collegeData)
 
@@ -90,7 +90,7 @@ const getCollegeDetails = async (req, res) => {
 
         if (!college) return res.status(404).send({ status: false, msg: 'no such college present!' })
 
-        const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({collegeId:0,__v:0,isDeleted:0})
+        const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({ collegeId: 0, __v: 0, isDeleted: 0 })
 
         if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` });
 
