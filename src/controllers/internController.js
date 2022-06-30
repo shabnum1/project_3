@@ -39,16 +39,7 @@ const createIntern = async (req, res) => {
 
         // if (!validCollegeId) return res.status(400).send({ status: false, msg: "This collegeId is not present in the Database!" })
 
-        //     let college = await collegeModel
-        //   .findOne({ $or: [{ name: collegeName }, { fullName: collegeName }], isDeleted : false })
-        //   .select({ _id: 1 });
-
-        // if (!college)
-        //   return res
-        //     .status(400)
-        //     .send({ status: false, message: "college  not exists" });
-        // delete data.collegeName;
-        // data.collegeId = college._id;
+      
 
         const validCollegeId = await collegeModel.findOne({ name: collegeName, isDeleted: false })
 
