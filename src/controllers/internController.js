@@ -1,13 +1,18 @@
 const internModel = require("../models/internModel");
 const collegeModel = require("../models/collegeModel");
 
-const { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex } = require("../middleware/validator")
+const { objectValue, nameRegex, emailRegex, keyValue, mobileRegex } = require("../middleware/validator")
 
 const createIntern = async (req, res) => {
 
     try {
 
-        const { name, email, mobile, collegeName } = req.body
+        const {isDeleted, name, email, mobile, collegeName } = req.body
+
+        if (isDeleted === ""){
+            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })}
+   
+           if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({status: false, msg: "isDeleted should be either true or false!"})
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })
 
@@ -33,23 +38,15 @@ const createIntern = async (req, res) => {
 
         if (!objectValue(collegeName)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
 
-        // if (!isValidObjectId(collegeName)) return res.status(400).send({ status: false, msg: "This collegeId is invalid!" })
-
-        // const validCollegeId = await collegeModel.findOne({_id: collegeName, isDeleted: false })
-
-        // if (!validCollegeId) return res.status(400).send({ status: false, msg: "This collegeId is not present in the Database!" })
-
-      
-
         const validCollegeId = await collegeModel.findOne({ name: collegeName, isDeleted: false })
+
+        if (!validCollegeId) return res.status(404).send({ status: false, msg: `There is no such college present with the name ${collegeName} in the Database!` })
 
         let collegeId = validCollegeId._id
 
         const collegeData = { name, email, mobile, collegeId }
 
         const internCreation = await internModel.create(collegeData)
-
-        // const intern = await internModel.findOne({email}).select({_id:0,__v:0})
 
         return res.status(201).send({
             status: true,
@@ -66,8 +63,6 @@ const createIntern = async (req, res) => {
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })
     }
-
-    //  NOTE ==> logo link validation is pending...don't forget to validate!
 
 }
 

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const axios = require('axios')
 
 const isValidObjectId = (objectId) => {
   return mongoose.Types.ObjectId.isValid(objectId);
@@ -38,4 +39,23 @@ const mobileRegex=(value)=>{
     return true;
 }
 
-module.exports = { isValidObjectId, objectValue, nameRegex, collegeRegex, emailRegex, keyValue, mobileRegex };
+const urlRegex =(value)=>{
+  let urlRegex = /(https|http?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i;
+  if(urlRegex.test(value))
+  return true;
+}
+
+// const verifyLogolink = async (value) =>{
+// // let validLogolink = false
+// await axios.get(value)
+//     .then((url) => {
+//         if (url.status === 200 || 201) {
+//             if (url.headers["content-type"].startsWith("image/"))
+//                 // validLogolink = true;
+//                 return true
+//         }
+//     })
+//     .catch((error) => validLogolink = false)
+//   }
+
+module.exports = { isValidObjectId, objectValue, nameRegex, collegeRegex, emailRegex, keyValue, mobileRegex, urlRegex };
