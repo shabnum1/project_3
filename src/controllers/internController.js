@@ -54,7 +54,7 @@ const createIntern = async (req, res) => {
 
         let collegeId = validCollegeId._id
 
-        const internCreation = await internModel.create(req.body)
+        const internCreation = await internModel.create({isDeleted:isDeleted, name:name, email:email, mobile:mobile, collegeId:collegeId});
 
         return res.status(201).send({
             status: true,
