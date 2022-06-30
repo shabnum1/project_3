@@ -10,13 +10,13 @@ const createCollege = async (req, res) => {
     try {
         let nameInLowerCase = req.body.name   // input in Lower case
 
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here
+
         if (!objectValue(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 
         nameInLowerCase = nameInLowerCase.toLowerCase()
 
         const { fullName, logoLink, isDeleted } = req.body    // Destructuring
-
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here
 
         if (!nameRegex(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })   // 4th V used here
        

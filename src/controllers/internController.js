@@ -13,6 +13,8 @@ const createIntern = async (req, res) => {
 
         const { isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
 
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })   // 3rd V used here
+
         let collegeNameInLowerCase = collegeName        
 
         if (!objectValue(collegeNameInLowerCase)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
@@ -25,8 +27,6 @@ const createIntern = async (req, res) => {
         }  // 2nd V used here
 
         if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({ status: false, msg: "isDeleted should be either true or false!" })
-
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })   // 3rd V used here
 
         if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 

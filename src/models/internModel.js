@@ -12,20 +12,20 @@ const internSchema = new mongoose.Schema(
 
         name: {
             type: String,
-            required: "Intern name is required!",
+            required: true,
             trim: true
         },
 
         email: {
             type: String,
-            required: "Email is required!",
+            required: true,
             unique: true,
             trim: true
         },
 
         mobile: {
             type: String,
-            required: "Mobile number is required!",
+            required: true,
             unique: true,
             trim: true
         },
