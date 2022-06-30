@@ -27,7 +27,7 @@ const keyValue = (value) => {
 // 4th Validator ==>
 
 const nameRegex = (value) => {
-  let nameRegex = /^[A-Za-z\s]{1,}[\]{0,1}[A-Za-z\s]{1,}$/;
+  let nameRegex =  /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;;
   if (nameRegex.test(value)) return true;
 };
 
@@ -63,19 +63,5 @@ const urlRegex = (value) => {
     return true;
 }
 
-//// 9th Validator ==>
-
-// const verifyLogolink = async (value) =>{
-// // let validLogolink = false
-// await axios.get(value)
-//     .then((url) => {
-//         if (url.status === 200 || 201) {
-//             if (url.headers["content-type"].startsWith("image/"))
-//                 // validLogolink = true;
-//                 return true
-//         }
-//     })
-//     .catch((error) => validLogolink = false)
-//   }
 
 module.exports = { isValidObjectId, objectValue, nameRegex, collegeRegex, emailRegex, keyValue, mobileRegex, urlRegex }; // EXPORTING THEM

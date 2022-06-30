@@ -1,6 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 const axios = require('axios')
-const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("../middleware/validator") // IMPORTING VALIDATORS
+const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("../middleware/validator"); // IMPORTING VALIDATORS
+const { findById, findOne } = require("../models/collegeModel");
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  FIRST API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
@@ -27,6 +28,10 @@ const createCollege = async (req, res) => {
         if (!objectValue(fullName)) return res.status(400).send({ status: false, msg: "fullName is required!" })  // 2nd V used here
 
         if (!collegeRegex(fullName)) return res.status(400).send({ status: false, msg: "College full name must be in characters and of atleast 5 characters long!" }) // 5th V used here
+
+        let duplicateLogoLink = await findOne({logoLink:logoLink})
+
+        if(duplicateLogoLink) return res.status(400).send ({status: false , msg: "logo link already in use!"})
 
         if (!objectValue(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is required!" })  // 2nd V used here
 
