@@ -8,22 +8,21 @@ const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("..
 
 const createCollege = async (req, res) => {
     try {
-        let nameInLowerCase = req.body.name.toLowerCase()
+        let nameInLowerCase = req.body.name   // input in Lower case
 
-        // let nameInLowerCase = name.toLowerCase()          // input in Lower case
+        if (!objectValue(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
+
+        nameInLowerCase = nameInLowerCase.toLowerCase()
 
         const { fullName, logoLink, isDeleted } = req.body    // Destructuring
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here
 
-        if (!objectValue(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
-
-        if (!nameRegex(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })
-        // 4th V used above
-
+        if (!nameRegex(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })   // 4th V used here
+       
         const duplicateName = await collegeModel.findOne({name: nameInLowerCase })
 
-        if (duplicateName) return res.status(400).send({ status: false, msg: "This college name is already used!" })
+        if (duplicateName) return res.status(400).send({ status: false, msg: "This college name is already used!" }) 
 
         if (!objectValue(fullName)) return res.status(400).send({ status: false, msg: "fullName is required!" })  // 2nd V used here
 
@@ -36,8 +35,8 @@ const createCollege = async (req, res) => {
         let validLogolink = false
         await axios.get(logoLink)
             .then((url) => {
-                if (url.status === 200 || 201) {
-                    if (url.headers["content-type"].startsWith("image/"))
+                if (url.status === 200 || 201) {                              
+                    if (url.headers["content-type"].startsWith("image/"))    // AXIOS VALIDATION
                         validLogolink = true;
                 }
             })
@@ -45,7 +44,7 @@ const createCollege = async (req, res) => {
 
         if (validLogolink === false) return res.status(404).send({ status: false, msg: "either logo link is incorrect or does not exist!" })
 
-        if (isDeleted === "") {         // Nested 'if' used here
+        if (isDeleted === "") {         // Nested 'if' statment used here
             if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })  // 2nd V used here
         }
 
@@ -53,7 +52,7 @@ const createCollege = async (req, res) => {
 
         const collegeData = {name:nameInLowerCase, fullName, logoLink, isDeleted}
 
-        const collegeCreaation = await collegeModel.create(collegeData)
+        const collegeCreation = await collegeModel.create(collegeData)
 
         const college = await collegeModel.findOne({name:nameInLowerCase}).select({ _id: 0, __v: 0 })
 

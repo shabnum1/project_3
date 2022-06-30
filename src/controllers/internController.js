@@ -11,21 +11,27 @@ const createIntern = async (req, res) => {
 
     try {
 
-        const {isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
+        const { isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
 
-        const collegeNameInLowerCase = collegeName.toLowerCase()          // input in Lower case
+        let collegeNameInLowerCase = collegeName        
 
-        if (isDeleted === ""){
-            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })}  // 2nd V used here
-   
-           if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({status: false, msg: "isDeleted should be either true or false!"})
+        if (!objectValue(collegeNameInLowerCase)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
+        // 2nd V used above
+
+        collegeNameInLowerCase = collegeName.toLowerCase()      // input in Lower case
+
+        if (isDeleted === "") {
+            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })
+        }  // 2nd V used here
+
+        if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({ status: false, msg: "isDeleted should be either true or false!" })
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })   // 3rd V used here
 
         if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 
         if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })   // 4th V used above
-        
+
         if (!objectValue(email)) return res.status(400).send({ status: false, msg: "email is required!" })   // 2nd V used here
 
         if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })   // 6th V used here
@@ -42,27 +48,22 @@ const createIntern = async (req, res) => {
 
         if (duplicateMobile) return res.status(400).send({ status: false, msg: "This mobile number is already used!" })
 
-        if (!objectValue(collegeNameInLowerCase)) return res.status(400).send({ status: false, msg: "collegeName is required!" })  
-         // 2nd V used above
-
         const validCollegeId = await collegeModel.findOne({ name: collegeNameInLowerCase, isDeleted: false })
 
         if (!validCollegeId) return res.status(404).send({ status: false, msg: `There is no such college present with the name ${collegeNameInLowerCase} in the Database!` })
 
         let collegeId = validCollegeId._id
 
-        const internData = { name, email, mobile, collegeId }         // Destructuring
-
-        const internCreation = await internModel.create(internData)
+        const internCreation = await internModel.create(req.body)
 
         return res.status(201).send({
             status: true,
             data: {
-                isDeleted: internData.isDeleted,
-                name: internData.name,
-                email: internData.email,                   // Destructuring
-                mobile: internData.mobile,
-                collegeId: internData.collegeId
+                isDeleted: internCreation.isDeleted,
+                name: internCreation.name,
+                email: internCreation.email,                   // Destructuring
+                mobile: internCreation.mobile,
+                collegeId: collegeId
             }
         })
     }
@@ -77,9 +78,14 @@ const createIntern = async (req, res) => {
 
 const getCollegeDetails = async (req, res) => {
     try {
-        const data = req.query.collegeName;
+
+        let data = req.query.collegeName;
+
         if (!data)
+
             return res.status(400).send({ status: false, msg: 'please enter key as collegeName and define some value!' });
+
+        data = data.toLowerCase()
 
         const college = await collegeModel.findOne({ name: data });
 
