@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND SCHEMA  ========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
 const internSchema = new mongoose.Schema(
     {
         isDeleted: {

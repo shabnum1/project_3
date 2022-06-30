@@ -1,61 +1,68 @@
 const internModel = require("../models/internModel");
 const collegeModel = require("../models/collegeModel");
 
-const { objectValue, nameRegex, emailRegex, keyValue, mobileRegex } = require("../middleware/validator")
+const { objectValue, nameRegex, emailRegex, keyValue, mobileRegex } = require("../middleware/validator")  // IMPORTING VALIDATORS
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
+// V = Validator 
 
 const createIntern = async (req, res) => {
 
     try {
 
-        const {isDeleted, name, email, mobile, collegeName } = req.body
+        const {isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
+
+        const collegeNameInLowerCase = collegeName.toLowerCase()          // input in Lower case
 
         if (isDeleted === ""){
-            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })}
+            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })}  // 2nd V used here
    
            if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({status: false, msg: "isDeleted should be either true or false!"})
 
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })   // 3rd V used here
 
-        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })
+        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 
-        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })
+        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })   // 4th V used above
+        
+        if (!objectValue(email)) return res.status(400).send({ status: false, msg: "email is required!" })   // 2nd V used here
 
-        if (!objectValue(email)) return res.status(400).send({ status: false, msg: "email is required!" })
-
-        if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })
+        if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })   // 6th V used here
 
         const duplicateEmail = await internModel.findOne({ email })
 
         if (duplicateEmail) return res.status(400).send({ status: false, msg: "This email is already used!" })
 
-        if (!objectValue(mobile)) return res.status(400).send({ status: false, msg: "mobile number is required!" })
+        if (!objectValue(mobile)) return res.status(400).send({ status: false, msg: "mobile number is required!" })   // 2nd V used here
 
-        if (!mobileRegex(mobile)) return res.status(400).send({ status: false, msg: "mobile number is invalid!" })
+        if (!mobileRegex(mobile)) return res.status(400).send({ status: false, msg: "mobile number is invalid!" })  // 7th V used here
 
         const duplicateMobile = await internModel.findOne({ mobile })
 
         if (duplicateMobile) return res.status(400).send({ status: false, msg: "This mobile number is already used!" })
 
-        if (!objectValue(collegeName)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
+        if (!objectValue(collegeNameInLowerCase)) return res.status(400).send({ status: false, msg: "collegeName is required!" })  
+         // 2nd V used above
 
-        const validCollegeId = await collegeModel.findOne({ name: collegeName, isDeleted: false })
+        const validCollegeId = await collegeModel.findOne({ name: collegeNameInLowerCase, isDeleted: false })
 
-        if (!validCollegeId) return res.status(404).send({ status: false, msg: `There is no such college present with the name ${collegeName} in the Database!` })
+        if (!validCollegeId) return res.status(404).send({ status: false, msg: `There is no such college present with the name ${collegeNameInLowerCase} in the Database!` })
 
         let collegeId = validCollegeId._id
 
-        const collegeData = { name, email, mobile, collegeId }
+        const internData = { name, email, mobile, collegeId }         // Destructuring
 
-        const internCreation = await internModel.create(collegeData)
+        const internCreation = await internModel.create(internData)
 
         return res.status(201).send({
             status: true,
             data: {
-                isDeleted: collegeData.isDeleted,
-                name: collegeData.name,
-                email: collegeData.email,
-                mobile: collegeData.mobile,
-                collegeId: collegeData.collegeId
+                isDeleted: internData.isDeleted,
+                name: internData.name,
+                email: internData.email,                   // Destructuring
+                mobile: internData.mobile,
+                collegeId: internData.collegeId
             }
         })
     }
@@ -65,6 +72,8 @@ const createIntern = async (req, res) => {
     }
 
 }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
 const getCollegeDetails = async (req, res) => {
     try {
@@ -78,9 +87,9 @@ const getCollegeDetails = async (req, res) => {
 
         const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({ collegeId: 0, __v: 0, isDeleted: 0 })
 
-        if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` });
+        if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` }); // 3rd V used here
 
-        res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })
+        res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })  // Destructuring
 
     }
 
@@ -89,4 +98,4 @@ const getCollegeDetails = async (req, res) => {
     }
 };
 
-module.exports = { createIntern, getCollegeDetails }
+module.exports = { createIntern, getCollegeDetails }  // Destructuring

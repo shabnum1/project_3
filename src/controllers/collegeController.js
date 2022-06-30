@@ -1,28 +1,37 @@
 const collegeModel = require("../models/collegeModel");
 const axios = require('axios')
-const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("../middleware/validator")
+const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("../middleware/validator") // IMPORTING VALIDATORS
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  FIRST API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
+// V = Validator 
 
 const createCollege = async (req, res) => {
     try {
-        const { name, fullName, logoLink, isDeleted } = req.body
+        let nameInLowerCase = req.body.name.toLowerCase()
 
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })
+        // let nameInLowerCase = name.toLowerCase()          // input in Lower case
 
-        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })
+        const { fullName, logoLink, isDeleted } = req.body    // Destructuring
 
-        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here
 
-        const duplicateName = await collegeModel.findOne({ name })
+        if (!objectValue(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
+
+        if (!nameRegex(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })
+        // 4th V used above
+
+        const duplicateName = await collegeModel.findOne({name: nameInLowerCase })
 
         if (duplicateName) return res.status(400).send({ status: false, msg: "This college name is already used!" })
 
-        if (!collegeRegex(fullName)) return res.status(400).send({ status: false, msg: "College full name must be in characters and of atleast 5 characters long!" })
+        if (!objectValue(fullName)) return res.status(400).send({ status: false, msg: "fullName is required!" })  // 2nd V used here
 
-        if (!objectValue(fullName)) return res.status(400).send({ status: false, msg: "fullName is required!" })
+        if (!collegeRegex(fullName)) return res.status(400).send({ status: false, msg: "College full name must be in characters and of atleast 5 characters long!" }) // 5th V used here
 
-        if (!objectValue(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is required!" })
+        if (!objectValue(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is required!" })  // 2nd V used here
 
-        if (!urlRegex(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is invalid!" })
+        if (!urlRegex(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is invalid!" })  // 8th V used here
 
         let validLogolink = false
         await axios.get(logoLink)
@@ -36,18 +45,20 @@ const createCollege = async (req, res) => {
 
         if (validLogolink === false) return res.status(404).send({ status: false, msg: "either logo link is incorrect or does not exist!" })
 
-        if (isDeleted === "") {
-            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })
+        if (isDeleted === "") {         // Nested 'if' used here
+            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })  // 2nd V used here
         }
 
         if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({ status: false, msg: "isDeleted should be either true or false!" })
 
-        const collegeCreaation = await collegeModel.create(req.body)
+        const collegeData = {name:nameInLowerCase, fullName, logoLink, isDeleted}
 
-        const college = await collegeModel.findOne({ name }).select({ _id: 0, __v: 0 })
+        const collegeCreaation = await collegeModel.create(collegeData)
+
+        const college = await collegeModel.findOne({name:nameInLowerCase}).select({ _id: 0, __v: 0 })
 
 
-        res.status(201).send({ status: true, data: college })
+        res.status(201).send({ status: true, data:college})
     }
     catch (error) {
         res.status(500).send({ status: false, msg: error.message })

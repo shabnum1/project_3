@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  FIRST SCHEMA  =========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
 const collegeSchema = new mongoose.Schema(
     {
         name: {
