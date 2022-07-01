@@ -9,13 +9,13 @@ const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("..
 
 const createCollege = async (req, res) => {
     try {
-        let nameInLowerCase = req.body.name   // input in Lower case
+        let nameInLowerCase = req.body.name   
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here
 
         if (!objectValue(nameInLowerCase)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 
-        nameInLowerCase = nameInLowerCase.toLowerCase()
+        nameInLowerCase = nameInLowerCase.toLowerCase()   // input in Lower case
 
         const { fullName, logoLink, isDeleted } = req.body    // Destructuring
 
