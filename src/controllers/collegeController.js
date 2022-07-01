@@ -29,16 +29,16 @@ const createCollege = async (req, res) => {
 
         if (!collegeRegex(fullName)) return res.status(400).send({ status: false, msg: "College full name must be in characters and of atleast 5 characters long!" }) // 5th V used here
 
-        if (!logoLink) return res.status(400).send({ status: false, msg: "logoLink is required!" })  // 2nd V used here
-
-        let duplicateLogoLink = await findOne({logoLink:logoLink})
-
-        if(duplicateLogoLink) return res.status(400).send ({status: false , msg: "logo link already in use!"})
-
         if (!objectValue(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is required!" })  // 2nd V used here
 
         if (!urlRegex(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is invalid!" })  // 8th V used here
 
+
+        let duplicateLogoLink = await findOne({logoLink:logoLink})
+
+        if(duplicateLogoLink) return res.status(400).send ({status: false , msg: "logo link already in use!"})
+  
+      
         let validLogolink = false
         await axios.get(logoLink)
             .then((url) => {
