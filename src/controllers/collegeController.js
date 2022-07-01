@@ -33,8 +33,7 @@ const createCollege = async (req, res) => {
 
         if (!urlRegex(logoLink)) return res.status(400).send({ status: false, msg: "logoLink is invalid!" })  // 8th V used here
 
-
-        let duplicateLogoLink = await findOne({logoLink:logoLink})
+        let duplicateLogoLink = await collegeModel.findOne({logoLink:logoLink})
 
         if(duplicateLogoLink) return res.status(400).send ({status: false , msg: "logo link already in use!"})
   
