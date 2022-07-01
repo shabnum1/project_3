@@ -1,7 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 const axios = require('axios')
 const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("../middleware/validator"); // IMPORTING VALIDATORS
-const { findById, findOne } = require("../models/collegeModel");
+
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  FIRST API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
