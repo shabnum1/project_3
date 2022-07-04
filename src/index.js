@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 const route = require('./routes/route.js');
 const { default: mongoose } = require('mongoose');
 const app = express();
+const multer = require('multer');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer().any())
 
 mongoose.connect("mongodb+srv://Saswath1403:S%40swath9476@cluster0.fjep0.mongodb.net/group66Database-DB", {
     useNewUrlParser: true
@@ -17,6 +19,6 @@ mongoose.connect("mongodb+srv://Saswath1403:S%40swath9476@cluster0.fjep0.mongodb
 app.use('/', route);
 
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3000))
+app.listen(process.env.PORT || 3001, function () {
+    console.log('Express app running on port ' + (process.env.PORT || 3001))
 });
