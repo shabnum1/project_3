@@ -9,6 +9,9 @@ const { urlRegex, objectValue, nameRegex, collegeRegex, keyValue } = require("..
 
 const createCollege = async (req, res) => {
     try {
+
+        res.setHeader('Access-Control-Allow-Origin','*')
+
         let nameInLowerCase = req.body.name   
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })  // 3rd V used here

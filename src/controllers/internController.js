@@ -11,7 +11,7 @@ const createIntern = async (req, res) => {
 
     try {
 
-        req.setHeader('Access-Control-Allow-Origin','*')
+        res.setHeader('Access-Control-Allow-Origin','*')
 
         const { isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
 
@@ -57,7 +57,7 @@ const createIntern = async (req, res) => {
         let collegeId = validCollegeId._id
 
         const internCreation = await internModel.create({isDeleted:isDeleted, name:name, email:email, mobile:mobile, collegeId:collegeId});
-        res.setHeader('Access-Control-Allow-Origin','*')
+        
         return res.status(201).send({
             status: true,
             data: {
@@ -80,6 +80,8 @@ const createIntern = async (req, res) => {
 
 const getCollegeDetails = async (req, res) => {
     try {
+
+        res.setHeader('Access-Control-Allow-Origin','*')
 
         let data = req.query.collegeName;
 
