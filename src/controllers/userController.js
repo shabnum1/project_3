@@ -69,6 +69,8 @@ const createUser = async (req, res) => {
 
 }
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
 const loginUser = async function (req, res) {
     try {
         let { email, password } = req.body
