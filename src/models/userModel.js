@@ -2,35 +2,55 @@ const mongoose = require("mongoose");
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  FIRST SCHEMA  =========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
-const collegeSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
     {
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+            enum:["Mr", "Mrs", "Miss"]
+        },
+
         name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        phone: {
             type: String,
             required: true,
             unique: true,
             trim: true
         },
 
-        fullName: {
+        email: {
             type: String,
             required: true,
+            unique: true,
             trim: true
         },
 
-        logoLink: {
+        password:{
             type: String,
-            required: true
+            required: true,
+            unique: true,
+            trim: true,
+            minlength: 8,
+            maxlength: 15
         },
 
-        isDeleted: {
-            type: Boolean,
-            default: false
-        }
+        address: {
+            street: { type: String },
+            city: { type: String},
+            pincode: { type: String}
+        },
 
-    }
+
+    }, {timestamps: true}
 
 )
 
 
-module.exports = mongoose.model("college", collegeSchema)
+module.exports = mongoose.model("user", userSchema)
 

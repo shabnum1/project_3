@@ -1,44 +1,70 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId
+const moment = require("moment")
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND SCHEMA  ========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
-const internSchema = new mongoose.Schema(
+const bookSchema = new mongoose.Schema(
     {
-        isDeleted: {
-            type: Boolean,
-            default: false
-        },
-
-        name: {
-            type: String,
-            required: true,
-            trim: true
-        },
-
-        email: {
+        title: {
             type: String,
             required: true,
             unique: true,
-            trim: true
+            trim: true,
         },
 
-        mobile: {
+        excerpt: {
             type: String,
             required: true,
-            unique: true,
             trim: true
         },
 
-        collegeId: {
+        userId: {
             type: ObjectId,
-            ref: "college"
-        }
-       
+            ref: "user",
+            required: true,
+            trim: true
+        },
 
-    }
+        ISBN: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true
+        },
 
-)
+        category: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        subcategory: {
+            type: [String],
+            required: true,
+            trim: true
+        },
+
+        reviews: {
+            type: Number,
+            default: 0,
+            comment: {
+                type: String
+            }
+        },
+
+        deletedAt: { type: Date, default: null },
+
+        isDeleted: { type: Boolean, default: false },
+
+        releasedAt: { type: moment(new Date()).format("DD.MM.YYYY"), required: true, default: null },
+
+    }, { timestamps: true })
 
 
-module.exports = mongoose.model("intern", internSchema)
+
+
+
+
+
+module.exports = mongoose.model("book", bookSchema)
