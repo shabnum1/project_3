@@ -48,16 +48,13 @@ const bookSchema = new mongoose.Schema(
         reviews: {
             type: Number,
             default: 0,
-            comment: {
-                type: String
-            }
         },
 
         deletedAt: { type: Date, default: null },
 
         isDeleted: { type: Boolean, default: false },
 
-        releasedAt: { type: moment(new Date()).format("DD.MM.YYYY"), required: true, default: null },
+        releasedAt: { type: moment(new Date()).format("YYYY-MM-DD"), required: true, default: null },
 
     }, { timestamps: true })
 

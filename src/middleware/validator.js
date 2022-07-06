@@ -61,8 +61,7 @@ const passwordRegex = (value) => {
 }
 
 const pincodeRegex = (value) => {
-  let pincodeRegex = /^[1-9][0-9]{5}$/
-  ;
+  let pincodeRegex = /^[1-9][0-9]{5}$/;
   if (pincodeRegex.test(value))
     return true;
 }

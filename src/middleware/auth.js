@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-// const userModel = require("../models/userModel");
 const mongoose = require('mongoose');
 
 //======================================================1st Middleware===================================================================//

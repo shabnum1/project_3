@@ -15,12 +15,6 @@ const createUser = async (req, res) => {
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
 
-        let street = req.body.address.street
-
-        let city = req.body.address.city
-
-        let pincode = req.body.address.pincode
-
         if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
 
         if (!isValidTitle(title)) return res.status(400).send({ status: false, msg: "Title must be Mr/Mrs/Miss" })
@@ -49,15 +43,21 @@ const createUser = async (req, res) => {
 
         if (!passwordRegex(password)) return res.status(400).send({ status: false, msg: "Password must be 8 to 15 characters long!" })
 
-        if (!keyValue(address)) return res.status(400).send({ status: false, msg: "Please enter your address!" })
+        if (address) {
+            if (!keyValue(address)) return res.status(400).send({ status: false, msg: "Please enter your address!" })
 
-        if (!objectValue(street)) return res.status(400).send({ status: false, msg: "Please enter your street!" })
+            if (req.body.address.street || req.body.address.street === "") {
+                if (!objectValue(req.body.address.street)) return res.status(400).send({ status: false, msg: "Please enter your street!" })
+            }
 
-        if (!objectValue(city)) return res.status(400).send({ status: false, msg: "Please enter your city!" })
+            if (req.body.address.city || req.body.address.city === "") {
+                if (!objectValue(req.body.address.city)) return res.status(400).send({ status: false, msg: "Please enter your city!" })
+            }
 
-        if (!pincodeRegex(pincode)) return res.status(400).send({ status: false, msg: "pincode is invalid!" })
-
-
+            if (req.body.address.pincode || req.body.address.pincode === "") {
+                if (!pincodeRegex(req.body.address.pincode)) return res.status(400).send({ status: false, msg: "pincode is invalid!" })
+            }
+        }
 
         const userCreation = await userModel.create(req.body)
 
