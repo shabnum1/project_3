@@ -26,7 +26,7 @@ const keyValue = (value) => {
 // 4th Validator ==>
 
 const nameRegex = (value) => {
-  let nameRegex =  /^[A-Za-z\s]{0,}[\.]{0,1}$/;;
+  let nameRegex =  /^(?![\. ])[a-zA-Z\. ]+(?<! )$/;
   if (nameRegex.test(value)) return true;
 };
 
@@ -46,7 +46,7 @@ const emailRegex = (value) => {
 // 7th Validator ==>
 
 const mobileRegex = (value) => {
-  let mobileRegex = /^[\]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/;
+  let mobileRegex = /^[6-9]\d{9}$/;
   if (mobileRegex.test(value))
     return true;
 }

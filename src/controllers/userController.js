@@ -49,7 +49,6 @@ const createUser = async (req, res) => {
 
         if (!passwordRegex(password)) return res.status(400).send({ status: false, msg: "Password must be 8 to 15 characters long!" })
 
-
         if (!keyValue(address)) return res.status(400).send({ status: false, msg: "Please enter your address!" })
 
         if (!objectValue(street)) return res.status(400).send({ status: false, msg: "Please enter your street!" })
