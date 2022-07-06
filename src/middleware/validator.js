@@ -11,7 +11,7 @@ const isValidObjectId = (objectId) => {
 // 2nd Validator ==>
 
 const objectValue = (value) => {
-  if (typeof value === "undefined" || value === null) return false;
+  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
   if (typeof value === "string" && value.length === 0) return false;
   return true;
 };
@@ -26,23 +26,20 @@ const keyValue = (value) => {
 // 4th Validator ==>
 
 const nameRegex = (value) => {
-  let nameRegex =  /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;;
+  let nameRegex =  /^[A-Za-z\s]{0,}[\.]{0,1}$/;;
   if (nameRegex.test(value)) return true;
 };
 
 // 5th Validator ==>
 
-const collegeRegex = (value) => {
-  let collegeRegex =
-    /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
-  if (collegeRegex.test(value))
-    return true;
+const isValidTitle = (title) => {
+  return ['Mr', 'Mrs', 'Miss'].indexOf(title) !== -1
 };
 
 // 6th Validator ==>
 
 const emailRegex = (value) => {
-  let emailRegex = /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+  let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-z\-0-9]+\.)+[a-z]{2,}))$/;
   if (emailRegex.test(value)) return true;
 };
 
@@ -56,11 +53,20 @@ const mobileRegex = (value) => {
 
 // 8th Validator ==>
 
-const urlRegex = (value) => {
-  let urlRegex = /(https|http?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i;
-  if (urlRegex.test(value))
+const passwordRegex = (value) => {
+  let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/
+  ;
+  if (passwordRegex.test(value))
+    return true;
+}
+
+const pincodeRegex = (value) => {
+  let pincodeRegex = /^[1-9][0-9]{5}$/
+  ;
+  if (pincodeRegex.test(value))
     return true;
 }
 
 
-module.exports = { isValidObjectId, objectValue, nameRegex, collegeRegex, emailRegex, keyValue, mobileRegex, urlRegex }; // EXPORTING THEM
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex }; 
+                                                                                                        // EXPORTING THEM
