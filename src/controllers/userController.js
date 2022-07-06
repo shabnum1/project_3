@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const jwt = require('jsonwebtoken')
 
-const { urlRegex, objectValue, nameRegex, keyValue, isValidTitle, mobileRegex, emailRegex, passwordRegex, pincodeRegex } = require("../middleware/validator"); // IMPORTING VALIDATORS
+const { objectValue, nameRegex, keyValue, isValidTitle, mobileRegex, emailRegex, passwordRegex, pincodeRegex } = require("../middleware/validator"); // IMPORTING VALIDATORS
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  FIRST API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
@@ -74,6 +74,8 @@ const createUser = async (req, res) => {
 const loginUser = async function (req, res) {
     try {
         let { email, password } = req.body
+
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide email and password!" })
 
         if (!email) return res.status(400).send({ status: false, msg: "email is not correct!" })
         if (!password) return res.status(400).send({ status: false, msg: "password is not correct!" })
