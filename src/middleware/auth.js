@@ -36,32 +36,32 @@ const authenticate = function (req, res, next) {
 
 //--------------------------------------------------AUTHORISATION MIDDLEWARE --------------------------------------------------------------\\
 
-// const authorisation = async function (req, res, next) {
+const authorisation = async function (req, res, next) {
 
-//     try {
-//         let token = req.headers["x-Auth-token"];
-//         if (!token) token = req.headers["x-auth-token"];
+    try {
+        let token = req.headers["x-Auth-token"];
+        if (!token) token = req.headers["x-auth-token"];
   
      
-//      let decodedToken = jwt.verify(token, "group66-project3");
+     let decodedToken = jwt.verify(token, "group66-project3");
 
-//       let userLoggedIn = decodedToken.userId
+      let userLoggedIn = decodedToken.userId
  
-//       let userToBeModified = req.query.userId
+      let userToBeModified = req.query.userId
     
-//       console.log(userToBeModified)
+      console.log(userToBeModified)
   
-//       //userId comparision to check if the logged-in user is requesting for their own data
-//       if(userToBeModified != userLoggedIn) 
-//       return res.send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
+      //userId comparision to check if the logged-in user is requesting for their own data
+      if(userToBeModified != userLoggedIn) 
+      return res.send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
 
-//       next()
-//     } catch (err) {
-//       return res.status(500).send({ status: false, msg: err.message })
-//     }
+      next()
+    } catch (err) {
+      return res.status(500).send({ status: false, msg: err.message })
+    }
   
   
-//   }
+  }
   
   
  

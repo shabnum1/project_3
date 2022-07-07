@@ -94,7 +94,7 @@ const booleanValue = (value) => {
 };
 
 const numberValue = (value) => {
-  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
+  if (typeof value === "undefined" || value === null || typeof value === "boolean" || typeof value === "string") return false;
   if (typeof value === "number" && value.length === 0) return false;
   return true;
 };
