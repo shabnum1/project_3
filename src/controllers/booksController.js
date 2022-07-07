@@ -1,4 +1,5 @@
 const booksModel = require("../models/booksModel");
+const reviewModel = require("../models/reviewModel")
 
 const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, booleanValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
@@ -92,5 +93,22 @@ const getBooks = async (req, res) => {
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<============================ FIFTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
+const getBooksbyId = async (req, res) => {
 
-module.exports = { createbooks, getBooks }  // Destructuring
+  const bookId = req.params.bookId
+
+  if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "bookId is invalid!" }) }
+
+  const findBooksbyId = await booksModel.findOne({ _id: bookId, isDeleted: false })
+
+  if (!findBooksbyId) {
+    return res.status(404).send({ status: false, msg: "Books not found or does not exist!" })
+  }
+
+  const reviews = await reviewModel.find({bookId: bookId})
+
+  res.status(200).send({status: true, message: 'Books list', data: {findBooksbyId, reviewsData: reviews}})
+
+}
+
+module.exports = { createbooks, getBooks, getBooksbyId }  // Destructuring

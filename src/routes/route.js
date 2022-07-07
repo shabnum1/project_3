@@ -13,6 +13,8 @@ route.post("/books" , booksController.createbooks)
 
 route.get("/books" , booksController.getBooks)
 
+route.get("/books/:bookId" , booksController.getBooksbyId)
+
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 
 module.exports = route
