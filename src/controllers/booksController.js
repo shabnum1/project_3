@@ -72,7 +72,7 @@ const getBooks = async (req, res) => {
 
         if (!keyValue(req.query))return res.status(400).send({ status: false, msg: "Please provide the required params!" });
 
-        const bookList= await booksModel.find({isDeleted : false}).select({ ISBN: 0, isDeleted: 0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
+        const bookList= await booksModel.find({isDeleted : false}).select({ ISBN: 0,subcategory:0, isDeleted: 0,deletedAt:0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
 
         if (!bookList) return res.status(404).send({ status: false, msg: 'no such books are present!' })
 
