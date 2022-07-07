@@ -39,17 +39,11 @@ const createbooks = async (req, res) => {
 
       if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" })
 
-      if (isDeleted || isDeleted === "") {
-        if (!booleanValue(isDeleted)) return res.status(400).send({ status: false, msg: "Please enter isDeleted!" })
-      }
-
+      if (isDeleted === true ) return res.status(400).send({ status: false, msg: "isDeleted must be false!" })
+      
       if (review || review === "") {
         if (!numberValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })
       }
-      
-      if (!dateValue(releasedAt)) { return res.status(400).send({ status: false, message: 'Please enter releasedAt' })}
-
-    //   if (releasedAt !== moment(new Date()).format("YYYY-MM-DD")) { return res.status(400).send({ status: false, message: 'Please provide a valid Date(YYYY-MM-DD)' })}
 
       const bookCreation = await booksModel.create(req.body)
 
@@ -72,14 +66,20 @@ const getBooks = async (req, res) => {
 
         if (!keyValue(req.query))return res.status(400).send({ status: false, msg: "Please provide the required params!" });
 
-        const bookList= await booksModel.find({isDeleted : false}).select({ ISBN: 0,subcategory:0, isDeleted: 0,deletedAt:0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
+        if (!objectValue(userId)) return res.status(400).send({ status: false, msg: "Please enter userId!" })
+        if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "userId is invalid!" })
+
+        if (!objectValue(category)) return res.status(400).send({ status: false, msg: "Please enter category!" })
+
+        if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" })
+  
+        const bookList= await booksModel.find({isDeleted : false, userId: req.query.userId }).select({ ISBN: 0,subcategory:0, isDeleted: 0,deletedAt:0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
 
         if (!bookList) return res.status(404).send({ status: false, msg: 'no such books are present!' })
 
 
         res.status(200).send({ status: true, data:bookList} )  // Destructuring
-        // res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })  // Destructuring
-
+      
     }
 
     catch (error) {
