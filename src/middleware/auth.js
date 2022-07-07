@@ -34,7 +34,7 @@ const authenticate = function (req, res, next) {
 } 
 
 
-//--------------------------------- AUTHORISATION MIDDLEWARE ----------------------------------------------------------------------------------
+//--------------------------------------------------AUTHORISATION MIDDLEWARE --------------------------------------------------------------\\
 
 const authorisation = async function (req, res, next) {
 
