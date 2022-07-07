@@ -59,36 +59,31 @@ const createbooks = async (req, res) => {
 
 const getBooks = async (req, res) => {
   try {
-
-    let { userId, category, subcategory } = req.query;
-
-    if (!keyValue(req.query)) return res.status(400).send({ status: false, msg: "Please provide the required params!" });
-
-    if (userId) {
-      if (!objectValue(userId)) return res.status(400).send({ status: false, msg: "Please enter userId!" })
-      if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "userId is invalid!" })
+    const userQuery = req.query;
+    const filter = {isDeleted:false};
+    const {userId,category,subcategory} = userQuery;
+    if(userId) {
+      if (!objectValue(userId)) {return res.status(400).send({ status: false, msg: "userId is invalid!" })}
+      else {filter["userId"]= userId};
     }
+    if (objectValue(category)) {filter["category"]=category.trim()};
+    if (objectValue(subcategory)) {
+      const subcategoryArray = subcategory.trim().split(",").map((s) => s.trim())
+      filter["subcategory"] = {$all:subcategoryArray} };
 
-    if (category) {
-      if (!objectValue(category)) return res.status(400).send({ status: false, msg: "Please enter category!" })
-    }
+      const bookList = await booksModel.find( filter ).select({ title:1, excerpt:1, userId:1, category:1, review:1, releasedAt:1 });
 
-    if (subcategory) {
-      if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" })
-    }
+      if (bookList.length === 0) return res.status(400).send({ status: false, msg: "no book found!"})
+    
+      const srotedBooks = bookList.sort((a,b)=>a.title.localeCompare(b.title))
 
-    const bookList = await booksModel.find({ isDeleted: false,  $or: [  {userId: req.query.userId}, {category: req.query.category}, {subcategory:req.query.subcategory} ]  }).select({ ISBN: 0, subcategory: 0, isDeleted: 0, deletedAt: 0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
-
-    if (!bookList) return res.status(404).send({ status: false, msg: 'no such books are present!' })
-
-
-    res.status(200).send({ status: true, data: bookList })  // Destructuring
+      res.status(200).send({ status: true, data: srotedBooks })
 
   }
-
   catch (error) {
     res.status(500).send({ status: false, msg: error.message });
   }
 };
+
 
 module.exports = { createbooks, getBooks }  // Destructuring
