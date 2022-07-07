@@ -66,11 +66,17 @@ const pincodeRegex = (value) => {
     return true;
 }
 
-const ISBNregex = (value) => {
-  let ISBNregex = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
-  if (ISBNregex.test(value))
-  return true;
+// const ISBNregex = (value) => {
+//   let ISBNregex = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
+//   if (ISBNregex.test(value))
+//   return true;
+// }
+
+const isValidISBN =function (ISBN){
+  const ISBNRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
+  return ISBNRegex.test(ISBN)
 }
+
 
 const isValidArray = (value) => {
   if (Array.isArray(value)) {
@@ -93,11 +99,15 @@ const numberValue = (value) => {
   return true;
 };
 
-const dateValue =  (value) => {
-  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
-  if (typeof value === Date && value.length === 0) return false;
-  return true;
-};
+const isValidDate =function(date){
+  const isValidDate = /^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/
+  return isValidDate.test(date)
+}
+// const isISBN =function(value){
+//   const isISBN = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
+//   return isISBN.test(value)
+// }
+
   
 
 // const ISBNvalue = (value) => {
@@ -107,5 +117,5 @@ const dateValue =  (value) => {
 // };
 
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, ISBNregex, isValidArray, booleanValue, numberValue, dateValue }; 
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate }; 
                                                                                                         // EXPORTING THEM
