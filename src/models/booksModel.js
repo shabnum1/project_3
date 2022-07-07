@@ -54,7 +54,7 @@ const bookSchema = new mongoose.Schema(
 
         isDeleted: { type: Boolean, default: false },
 
-        releasedAt: { type: moment(new Date()).format("YYYY-MM-DD"), required: true, default: null },
+        releasedAt: { type: Date, required: true, default: moment(new Date()).format("YYYY-MM-DD") },
 
     }, { timestamps: true })
 

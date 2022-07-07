@@ -66,6 +66,46 @@ const pincodeRegex = (value) => {
     return true;
 }
 
+const ISBNregex = (value) => {
+  let ISBNregex = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
+  if (ISBNregex.test(value))
+  return true;
+}
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex }; 
+const isValidArray = (value) => {
+  if (Array.isArray(value)) {
+      for (let i = 0; i < value.length; i++) {
+          if (value[i].trim().length === 0 || typeof (value[i]) !== "string") { return false }
+      }
+      return true
+  } else { return false }
+}
+
+const booleanValue = (value) => {
+  if (typeof value === "undefined" || typeof value === "string" || value === null || typeof value === "number" || typeof value === true) return false;
+  if (typeof value === false && value.length === 0) return false;
+  return true;
+};
+
+const numberValue = (value) => {
+  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
+  if (typeof value === "number" && value.length === 0) return false;
+  return true;
+};
+
+const dateValue =  (value) => {
+  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
+  if (typeof value === Date && value.length === 0) return false;
+  return true;
+};
+  
+
+// const ISBNvalue = (value) => {
+//   if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
+//   if (typeof value === "number" && value.length === 0) return false;
+//   return true;
+// };
+
+
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, ISBNregex, isValidArray, booleanValue, numberValue, dateValue }; 
                                                                                                         // EXPORTING THEM

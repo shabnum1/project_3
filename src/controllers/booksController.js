@@ -1,73 +1,60 @@
-const internModel = require("../models/internModel");
-const collegeModel = require("../models/collegeModel");
+const booksModel = require("../models/booksModel");
+const moment = require("moment")
 
-const { objectValue, nameRegex, emailRegex, keyValue, mobileRegex } = require("../middleware/validator")  // IMPORTING VALIDATORS
+const { objectValue,  keyValue, ISBNregex, isValidArray, numberValue, booleanValue, dateValue, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
 // V = Validator 
 
-const createIntern = async (req, res) => {
+const createbooks = async (req, res) => {
 
     try {
+      let  {title, excerpt, userId, ISBN, category, subcategory, releasedAt, isDeleted, review} = req.body 
 
-        res.setHeader('Access-Control-Allow-Origin','*')
+      if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
 
-        const { isDeleted, name, email, mobile, collegeName } = req.body              // Destructuring
+      if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
 
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "All fields are empty!" })   // 3rd V used here
+      let duplicateTitle = await booksModel.findOne({title})
 
-        let collegeNameInLowerCase = collegeName        
+      if (duplicateTitle) return res.status(400).send({ status: false, msg: "title is already in use!" })
 
-        if (!objectValue(collegeNameInLowerCase)) return res.status(400).send({ status: false, msg: "collegeName is required!" })
-        // 2nd V used above
+      if (!objectValue(excerpt)) return res.status(400).send({ status: false, msg: "Please enter excerpt!" })
 
-        collegeNameInLowerCase = collegeName.toLowerCase()      // input in Lower case
+      if (!objectValue(userId)) return res.status(400).send({ status: false, msg: "Please enter userId!" })
+      if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "userId is invalid!" })
 
-        if (isDeleted === "") {
-            if (!objectValue(isDeleted)) return res.status(400).send({ status: false, msg: "isDeleted is invalid!" })
-        }  // 2nd V used here
+    //   if(ISBNregex(ISBN)){ return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!'})}
 
-        if (isDeleted && typeof isDeleted !== "boolean") return res.status(400).send({ status: false, msg: "isDeleted should be either true or false!" })
+    if(!/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/.test(ISBN)){
+        return res.status(400).send({ status: false, message: 'Please provide a valid ISBN(ISBN should be 13 digit)' })}
 
-        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "name is required!" })  // 2nd V used here
 
-        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name must be in alphabet and atleast of 2 characters!" })   // 4th V used above
+      let duplicateISBN = await booksModel.findOne({ ISBN })
 
-        if (!objectValue(email)) return res.status(400).send({ status: false, msg: "email is required!" })   // 2nd V used here
+      if (duplicateISBN) return res.status(400).send({ status: false, msg: "ISBN is already registered!" })
 
-        if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })   // 6th V used here
+      if (!objectValue(category)) return res.status(400).send({ status: false, msg: "Please enter category!" })
 
-        const duplicateEmail = await internModel.findOne({ email })
+      if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" })
 
-        if (duplicateEmail) return res.status(400).send({ status: false, msg: "This email is already used!" })
+      if (isDeleted || isDeleted === "") {
+        if (!booleanValue(isDeleted)) return res.status(400).send({ status: false, msg: "Please enter isDeleted!" })
+      }
 
-        if (!objectValue(mobile)) return res.status(400).send({ status: false, msg: "mobile number is required!" })   // 2nd V used here
+      if (review || review === "") {
+        if (!numberValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })
+      }
+      
+      if (!dateValue(releasedAt)) { return res.status(400).send({ status: false, message: 'Please enter releasedAt' })}
 
-        if (!mobileRegex(mobile)) return res.status(400).send({ status: false, msg: "mobile number is invalid!" })  // 7th V used here
+    //   if (releasedAt !== moment(new Date()).format("YYYY-MM-DD")) { return res.status(400).send({ status: false, message: 'Please provide a valid Date(YYYY-MM-DD)' })}
 
-        const duplicateMobile = await internModel.findOne({ mobile })
+      const bookCreation = await booksModel.create(req.body)
 
-        if (duplicateMobile) return res.status(400).send({ status: false, msg: "This mobile number is already used!" })
+      res.status(201).send({ status: true, data: bookCreation })
 
-        const validCollegeId = await collegeModel.findOne({ name: collegeNameInLowerCase, isDeleted: false })
-
-        if (!validCollegeId) return res.status(404).send({ status: false, msg: `There is no such college present with the name ${collegeNameInLowerCase} in the Database!` })
-
-        let collegeId = validCollegeId._id
-
-        const internCreation = await internModel.create({isDeleted:isDeleted, name:name, email:email, mobile:mobile, collegeId:collegeId});
-        
-        return res.status(201).send({
-            status: true,
-            data: {
-                isDeleted: internCreation.isDeleted,
-                name: internCreation.name,
-                email: internCreation.email,                   // Destructuring
-                mobile: internCreation.mobile,
-                collegeId: collegeId
-            }
-        })
     }
 
     catch (error) {
@@ -78,28 +65,20 @@ const createIntern = async (req, res) => {
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
-const getCollegeDetails = async (req, res) => {
+const getBooks = async (req, res) => {
     try {
 
-        res.setHeader('Access-Control-Allow-Origin','*')
+        let {userId, category, subcategory} = req.query;
 
-        let data = req.query.collegeName;
+        if (!keyValue(req.query))return res.status(400).send({ status: false, msg: "Please provide the required params!" });
 
-        if (!data)
+        const bookList= await booksModel.find({isDeleted : false}).select({ ISBN: 0, isDeleted: 0, updatedAt: 0, createdAt: 0, __v: 0 }).sort({ title: 1 });
 
-            return res.status(400).send({ status: false, msg: 'please enter key as collegeName and define some value!' });
+        if (!bookList) return res.status(404).send({ status: false, msg: 'no such books are present!' })
 
-        data = data.toLowerCase()
 
-        const college = await collegeModel.findOne({ name: data });
-
-        if (!college) return res.status(404).send({ status: false, msg: 'no such college present!' })
-
-        const intern = await internModel.find({ collegeId: college._id, isDeleted: false }).select({ collegeId: 0, __v: 0, isDeleted: 0 })
-
-        if (!keyValue(intern)) return res.status(404).send({ status: false, msg: `${data} does not have any interns!` }); // 3rd V used here
-
-        res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })  // Destructuring
+        res.status(200).send({ status: true, data:bookList} )  // Destructuring
+        // res.status(200).send({ status: true, data: { name: college.name, fullName: college.fullName, logoLink: college.logoLink, interns: intern } })  // Destructuring
 
     }
 
@@ -108,4 +87,4 @@ const getCollegeDetails = async (req, res) => {
     }
 };
 
-module.exports = { createIntern, getCollegeDetails }  // Destructuring
+module.exports = { createbooks, getBooks }  // Destructuring
