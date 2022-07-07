@@ -107,7 +107,7 @@ const getBooksbyId = async (req, res) => {
 
   const reviews = await reviewModel.find({bookId: bookId})
 
-  res.status(200).send({status: true, message: 'Books list', data: {findBooksbyId, reviewsData: reviews}})
+  res.status(200).send({status: true, message: 'Books list', data: findBooksbyId, reviewsData: reviews})
 
 }
 
