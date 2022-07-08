@@ -81,9 +81,9 @@ const getBooks = async (req, res) => {
 
     if (bookList.length === 0) return res.status(400).send({ status: false, msg: "no book found!" })
 
-    const srotedBooks = bookList.sort((a, b) => a.title.localeCompare(b.title))
+    const sortedBooks = bookList.sort((a, b) => a.title.localeCompare(b.title))
 
-    res.status(200).send({ status: true, data: srotedBooks })
+    res.status(200).send({ status: true, data: sortedBooks })
 
   }
   catch (error) {
@@ -105,10 +105,74 @@ const getBooksbyId = async (req, res) => {
     return res.status(404).send({ status: false, msg: "Books not found or does not exist!" })
   }
 
-  const reviews = await reviewModel.find({bookId: bookId})
+  const reviews = await reviewModel.find({ bookId: bookId })
 
-  res.status(200).send({status: true, message: 'Books list', data: findBooksbyId, reviewsData: reviews})
+  res.status(200).send({ status: true, message: 'Books list', data: findBooksbyId, reviewsData: reviews })
 
 }
 
-module.exports = { createbooks, getBooks, getBooksbyId }  // Destructuring
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<============================ SIXTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
+
+const updateBooks = async function (req, res) {
+  try {
+    const bookId = req.params.bookId;
+
+    if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "bookId is invalid!" })
+
+    const findBooksbyId = await booksModel.findOne({ _id: bookId, isDeleted: false })
+
+    if (!findBooksbyId) {
+      return res.status(404).send({ status: false, msg: "Books not found or does not exist!" })
+    }
+
+    const { title, excerpt, releasedAt, ISBN } = req.body;
+
+    if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide something to update!" });
+
+    if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
+
+    let duplicateTitle = await booksModel.findOne({ title })
+    if (duplicateTitle) return res.status(400).send({ status: false, msg: "title is already in use!" })
+
+    if (!objectValue(excerpt)) return res.status(400).send({ status: false, msg: "Please enter excerpt!" })
+
+    if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" })
+
+    if (!isValidISBN(ISBN)) { return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' }) }
+
+    let duplicateISBN = await booksModel.findOne({ ISBN })
+    if (duplicateISBN) return res.status(400).send({ status: false, msg: "ISBN is already registered!" })
+
+    const book = await booksModel.findOneAndUpdate(
+      { _id: bookId },
+      { $set: { title, excerpt, releasedAt, ISBN }, },
+      { new: true }
+    );
+    return res.status(200).send({ status: true, data: book });
+  } catch (err) {
+    return res.status(500).send({ status: false, msg: err.message });
+  }
+};
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<========================== SEVENTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
+const deleteBooksbyId = async (req, res) => {
+
+  const bookId = req.params.bookId
+
+  if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "bookId is invalid!" }) }
+
+  const deletedBooks = await booksModel.findOneAndUpdate(
+    { _id: bookId, isDeleted: false },
+    { $set: { isDeleted: true, deletedAt: new Date() } },
+    { new: true })
+
+  res.status(200).send({ status: true, message: "Book deleted successfullly.", data: deletedBooks })
+
+}
+
+
+module.exports = { createbooks, getBooks, getBooksbyId, updateBooks, deleteBooksbyId }  // Destructuring
+

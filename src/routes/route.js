@@ -15,6 +15,10 @@ route.get("/books" , booksController.getBooks)
 
 route.get("/books/:bookId" , booksController.getBooksbyId)
 
+route.put("/books/:bookId" , booksController.updateBooks)
+
+route.delete("/books/:bookId" , booksController.deleteBooksbyId)
+
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 
 module.exports = route
