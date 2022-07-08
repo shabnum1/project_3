@@ -9,15 +9,15 @@ route.post("/register" , userController.createUser)
 
 route.post("/login" , userController.loginUser)
 
-route.post("/books" , booksController.createbooks)
+route.post("/books" ,middleware.authentication,middleware.authorization, booksController.createbooks)
 
-route.get("/books" , booksController.getBooks)
+route.get("/books" ,middleware.authentication, booksController.getBooks)
 
-route.get("/books/:bookId" , booksController.getBooksbyId)
+route.get("/books/:bookId" ,middleware.authentication, booksController.getBooksbyId)
 
-route.put("/books/:bookId" , booksController.updateBooks)
+route.put("/books/:bookId" ,middleware.authentication, booksController.updateBooks)
 
-route.delete("/books/:bookId" , booksController.deleteBooksbyId)
+route.delete("/books/:bookId" ,middleware.authentication, booksController.deleteBooksbyId)
 
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 

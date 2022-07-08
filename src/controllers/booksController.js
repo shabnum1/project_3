@@ -1,6 +1,6 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
-
+const jwt = require("jsonwebtoken");
 const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, booleanValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
@@ -26,7 +26,7 @@ const createbooks = async (req, res) => {
     if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "userId is invalid!" })
 
     if (!objectValue(ISBN)) return res.status(400).send({ status: false, msg: "Please enter ISBN number!" })
-    if (isValidISBN(ISBN)) { return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' }) }
+    if (!isValidISBN(ISBN)) { return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' }) }
 
     let duplicateISBN = await booksModel.findOne({ ISBN })
 
@@ -118,6 +118,28 @@ const getBooksbyId = async (req, res) => {
 const updateBooks = async function (req, res) {
   try {
     const bookId = req.params.bookId;
+    let token = req.headers["x-api-key"]
+
+        if (!token) return res.status(400).send({ status: false, msg: "No Token Found" })
+
+        let decodedToken = jwt.verify(token, "group66-project3")
+
+        if (!decodedToken) return res.status(401).send({ status: false, msg: "invalid token" })
+        
+        if (bookId) {
+            let books = await booksModel.findById(bookId)
+            console.log(bookId)
+            if (!books) {
+                
+                return res.status(404).send({ status: false, msg: "book does not existm" })
+            }
+
+            if (books.userId !==decodedToken.userId) {
+              console.log(books.userId)
+                return res.status(404).send({ status: false, msg: "not authorize" })
+                }
+
+
 
     if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "bookId is invalid!" })
 
@@ -128,7 +150,7 @@ const updateBooks = async function (req, res) {
     }
 
     const { title, excerpt, releasedAt, ISBN } = req.body;
-
+    
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide something to update!" });
 
     if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
@@ -151,7 +173,7 @@ const updateBooks = async function (req, res) {
       { new: true }
     );
     return res.status(200).send({ status: true, data: book });
-  } catch (err) {
+  } }catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
   }
 };
@@ -163,6 +185,10 @@ const deleteBooksbyId = async (req, res) => {
   const bookId = req.params.bookId
 
   if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "bookId is invalid!" }) }
+  const findBooksbyId = await booksModel.findOne({ _id: bookId, isDeleted: false })
+
+  if (!findBooksbyId) {
+    return res.status(404).send({ status: false, msg: "Books not found or does not exist!" })}
 
   const deletedBooks = await booksModel.findOneAndUpdate(
     { _id: bookId, isDeleted: false },
