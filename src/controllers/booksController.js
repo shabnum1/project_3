@@ -170,11 +170,16 @@ const deleteBooksbyId = async (req, res) => {
   const bookId = req.params.bookId
 
   if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "bookId is invalid!" }) }
+
   const findBooksbyId = await booksModel.findOne({ _id: bookId, isDeleted: false })
 
-  if (!findBooksbyId) {
-    return res.status(404).send({ status: false, msg: "Books not found or does not exist!" })
-  }
+  if (!findBooksbyId) { return res.status(404).send({ status: false, msg: "Books not found or does not exist!" }) }
+
+  let token = req.headers["x-api-key"]
+
+  let decodedToken = jwt.verify(token, "group66-project3")
+
+  if (findBooksbyId.userId != decodedToken.userId) { return res.status(403).send({ status: false, msg: "not authorized!" }) }
 
   const deletedBooks = await booksModel.findOneAndUpdate(
     { _id: bookId, isDeleted: false },
