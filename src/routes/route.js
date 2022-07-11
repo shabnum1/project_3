@@ -22,6 +22,10 @@ route.delete("/books/:bookId" ,middleware.authentication, booksController.delete
 
 route.post("/books/:bookId/review" , reviewController.createReviews)
 
+route.put("/books/:bookId/review/:reviewId" , reviewController.updateReviews)
+
+route.delete("/books/:bookId/review/:reviewId" , reviewController.deleteReviewbyId)
+
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 
 module.exports = route
