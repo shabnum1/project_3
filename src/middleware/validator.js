@@ -66,6 +66,12 @@ const pincodeRegex = (value) => {
     return true;
 }
 
+const ratingRegex = (value) => {
+  let ratingRegex = /^[1-5]{1}$/;
+  if (ratingRegex.test(value))
+    return true;
+}
+
 // const ISBNregex = (value) => {
 //   let ISBNregex = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
 //   if (ISBNregex.test(value))
@@ -117,5 +123,5 @@ const isValidDate =function(date){
 // };
 
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate }; 
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex }; 
                                                                                                         // EXPORTING THEM

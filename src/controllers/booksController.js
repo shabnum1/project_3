@@ -153,7 +153,7 @@ const updateBooks = async function (req, res) {
 
     const updatedBooks = await booksModel.findOneAndUpdate(
       { _id: bookId },
-      { $set: { title, excerpt, releasedAt, ISBN }, },
+      { $set: { title, excerpt, releasedAt, ISBN } },
       { new: true }
     );
     return res.status(200).send({ status: true, data: updatedBooks });
