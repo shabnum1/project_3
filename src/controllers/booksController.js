@@ -7,7 +7,7 @@ const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, booleanVa
 
 // V = Validator 
 
-const createbooks = async (req, res) => {
+const createBooks = async (req, res) => {
 
   try {
     const { title, excerpt, userId, ISBN, category, subcategory, releasedAt, isDeleted, reviews } = req.body
@@ -191,5 +191,5 @@ const deleteBooksbyId = async (req, res) => {
 }
 
 
-module.exports = { createbooks, getBooks, getBooksbyId, updateBooks, deleteBooksbyId }  // Destructuring
+module.exports = { createBooks, getBooks, getBooksbyId, updateBooks, deleteBooksbyId }  // Destructuring
 
