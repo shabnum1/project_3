@@ -20,7 +20,7 @@ const reviewSchema = new mongoose.Schema(
             default: "Guest"
         },
 
-        reviewedAt: { type: Date, default: Date.now},
+        reviewedAt: { type: String, required:true},
 
 
         rating: {

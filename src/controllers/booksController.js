@@ -69,12 +69,12 @@ const getBooks = async (req, res) => {
     if (userId) {
       if (!objectValue(userId)) { return res.status(400).send({ status: false, msg: "userId is invalid!" }) }
       if (!isValidObjectId(userId)) { return res.status(400).send({ status: false, msg: "userId is invalid!" }) }
-      else { filter["userId"] = userId };
+      else { filter.userId = userId };
     }
-    if (objectValue(category)) { filter["category"] = category.trim() };
+    if (objectValue(category)) { filter.category = category.trim() };
     if (objectValue(subcategory)) {
       const subcategoryArray = subcategory.trim().split(",").map((s) => s.trim())
-      filter["subcategory"] = { $all: subcategoryArray }
+      filter.subcategory = { $all: subcategoryArray }
     };
 
     const bookList = await booksModel.find(filter).select({ title: 1, excerpt: 1, userId: 1, category: 1, review: 1, releasedAt: 1 });

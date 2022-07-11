@@ -10,21 +10,21 @@ route.post("/register" , userController.createUser)
 
 route.post("/login" , userController.loginUser)
 
-route.post("/books" ,middleware.authentication,middleware.authorization, booksController.createBooks)
+route.post("/books" ,middleware.authentication, middleware.authorization, booksController.createBooks)
 
 route.get("/books" ,middleware.authentication, booksController.getBooks)
 
-route.get("/books/:bookId" , booksController.getBooksbyId)
+route.get("/books/:bookId" ,middleware.authentication,booksController.getBooksbyId)
 
 route.put("/books/:bookId" ,middleware.authentication, booksController.updateBooks)
 
 route.delete("/books/:bookId" ,middleware.authentication, booksController.deleteBooksbyId)
 
-route.post("/books/:bookId/review" , reviewController.createReviews)
+route.post("/books/:bookId/review" ,middleware.authentication, reviewController.createReviews)
 
-route.put("/books/:bookId/review/:reviewId" , reviewController.updateReviews)
+route.put("/books/:bookId/review/:reviewId" ,middleware.authentication, reviewController.updateReviews)
 
-route.delete("/books/:bookId/review/:reviewId" , reviewController.deleteReviewbyId)
+route.delete("/books/:bookId/review/:reviewId" ,middleware.authentication, reviewController.deleteReviewbyId)
 
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 

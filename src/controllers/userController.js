@@ -91,7 +91,7 @@ const loginUser = async function (req, res) {
                 group: "sixty-six",
                 project: "BooksManagement",
                 iat: Math.floor(Date.now() / 1000),
-                exp: Math.floor(Date.now() / 1000) + 48 * 60 * 60
+                exp: Math.floor(Date.now() / 1000) + 65 * 60 * 60
             },
             "group66-project3"
         )

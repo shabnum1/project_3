@@ -72,11 +72,6 @@ const ratingRegex = (value) => {
     return true;
 }
 
-// const ISBNregex = (value) => {
-//   let ISBNregex = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
-//   if (ISBNregex.test(value))
-//   return true;
-// }
 
 const isValidISBN =function (ISBN){
   const ISBNRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
