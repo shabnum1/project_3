@@ -46,7 +46,7 @@ const createReviews = async (req, res) => {
     const reviewCreation = await reviewModel.create(reviewData)
 
     if (reviewCreation) {
-      findBooksbyId.reviews = findBooksbyId.reviews + 1;     // Increasing the reviews
+      findBooksbyId.reviews = findBooksbyId.reviews + 1;     // Increasing the review count by 1
 
       await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } })
  
@@ -78,7 +78,7 @@ const updateReviews = async function (req, res) {
 
     if (review || review === "") {
       if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })   // 2nd V used here
-      if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" })
+      if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" }) // 11th V used here
     }
 
     if (rating || rating === "") {
@@ -125,15 +125,14 @@ const deleteReviewbyId = async (req, res) => {
     const findReview = await reviewModel.findOne({ _id: reviewId, isDeleted: false })    // DB Call
     if (!findReview) { return res.status(404).send({ status: false, msg: "review not found or does not exist!" }) } // DB Validation
 
-    findBooksbyId.reviews = findBooksbyId.reviews - 1;        // Reducing the reviews
+    findBooksbyId.reviews = findBooksbyId.reviews - 1;        // Decreasing the review count by 1
 
-    let updateReviews = await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } })
+     await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } }) ;
 
-
-    const deletedreview = await reviewModel.findOneAndUpdate(
+     await reviewModel.findOneAndUpdate(
       { _id: reviewId, isDeleted: false },
-      { $set: { isDeleted: true, deletedAt: new Date() } },
-      { new: true })
+      { $set: { isDeleted: true, deletedAt: new Date() } })
+      
 
     return res.status(200).send({ status: true, message: "Review deleted successfully!", data: findBooksbyId });
 
