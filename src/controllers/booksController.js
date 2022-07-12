@@ -1,7 +1,7 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
 const jwt = require("jsonwebtoken");
-const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
+const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId, strRegex } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
 //------------------------------------------------------  THIRD API  ------------------------------------------------------------------\\
 
@@ -32,6 +32,7 @@ const createBooks = async (req, res) => {
     if (duplicateISBN) return res.status(400).send({ status: false, msg: "ISBN is already registered!" })   // Duplicate Validation
 
     if (!objectValue(category)) return res.status(400).send({ status: false, msg: "Please enter category!" })  // 2nd V used here
+    if (!strRegex(category)) return res.status(400).send({ status: false, msg: "Please enter category in Alphabets only!" })  // 14th V used here
 
     if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" }) // 13th V used here 
 
