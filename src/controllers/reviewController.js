@@ -27,8 +27,7 @@ const createReviews = async (req, res) => {
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })   // 3rd V used here
 
     if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter valid review!" })          // 2nd V used here
-    if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" }) // 11th V used here
-
+    
     if (!numberValue(rating)) return res.status(400).send({ status: false, msg: "Please enter rating in correct format!" }) //15th V used here
 
     if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })   // 10th V used here
@@ -36,7 +35,7 @@ const createReviews = async (req, res) => {
     if(reviewedBy === "") {reviewedBy = "Guest" }
 
     if (reviewedBy) {     // Nested If used here
-      if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" }) 
+      if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" }) 
            // 2nd V used above
       if (!strRegex(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" })             // 11th V used above
     } 
@@ -78,7 +77,6 @@ const updateReviews = async function (req, res) {
 
     if (review || review === "") {
       if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })   // 2nd V used here
-      if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" }) // 11th V used here
     }
 
     if (rating || rating === "") {
