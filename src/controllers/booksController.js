@@ -74,7 +74,7 @@ const getBooks = async (req, res) => {
     if (objectValue(category)) { filter.category = category.trim() };        // 2nd V used here
     if (objectValue(subcategory)) {               // 2nd V used here
       const subcategoryArray = subcategory.trim().split(",").map((s) => s.trim())
-      filter.subcategory = { $all: subcategoryArray }
+      filter.subcategory = { $all: subcategoryArray } // The $all operator selects the documents where the value of a field is an array that contains all the specified elements.
     };
 
     const bookList = await booksModel.find(filter).select({ title: 1, excerpt: 1, userId: 1, category: 1, review: 1, releasedAt: 1 });
