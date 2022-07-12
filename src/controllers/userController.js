@@ -94,10 +94,11 @@ const loginUser = async function (req, res) {
                 group: "sixty-six",                                      // Payload
                 project: "BooksManagement",
                 iat: Math.floor(Date.now() / 1000),
-                exp: Math.floor(Date.now() / 1000) + 65 * 60 * 60
+                exp: Math.floor(Date.now() / 1000) + 1 * 60
             },
             "group66-project3"              // Secret Key 
         )
+        
         return res.status(201).send({ status: true, data: token })
     }
     catch (err) {
