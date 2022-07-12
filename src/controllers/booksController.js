@@ -72,7 +72,7 @@ const getBooks = async (req, res) => {
     }
     if (objectValue(category)) { filter.category = category.trim() };        // 2nd V used here
     if (objectValue(subcategory)) {               // 2nd V used here
-      const subcategoryArray = subcategory.trim().split(",").map((s) => s.trim()) 
+      const subcategoryArray = subcategory.trim().split(",").map((s) => s.trim())
       filter.subcategory = { $all: subcategoryArray }
     };
 
@@ -133,14 +133,20 @@ const updateBooks = async function (req, res) {
 
     if (!(title || excerpt || releasedAt || ISBN)) return res.status(400).send({ status: false, msg: "Please input valid params to update!" });
 
-    if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })        // 2nd V used here
+    if (title || title === "") {          // Nested If used here
+      if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
+    }        // 2nd V used abpve
 
     let duplicateTitle = await booksModel.findOne({ title })
     if (duplicateTitle) return res.status(400).send({ status: false, msg: "title is already in use!" })    // Duplicate Validation
 
-    if (!objectValue(excerpt)) return res.status(400).send({ status: false, msg: "Please enter excerpt!" })        // 2nd V used here
+    if (excerpt || excerpt === "") {       // Nested If used here
+      if (!objectValue(excerpt)) return res.status(400).send({ status: false, msg: "Please enter excerpt!" })
+    }        // 2nd V used above
 
-    if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" })  // 2nd V used here
+    if (releasedAt || releasedAt === "") {    // Nested If used here
+      if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" })
+    }  // 2nd V used above
 
     if (!isValidISBN(ISBN)) { return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' }) }
 
