@@ -1,7 +1,7 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
 const moment = require("moment")
-const { objectValue, keyValue, numberValue, ratingRegex, isValidObjectId } = require("../middleware/validator");  // IMPORTING VALIDATORS
+const { objectValue, keyValue, numberValue, ratingRegex, isValidObjectId, strRegex } = require("../middleware/validator");  // IMPORTING VALIDATORS
 
 
 //-------------------------------------------------------  EIGHTH API  ---------------------------------------------------------------------\\
@@ -36,6 +36,7 @@ const createReviews = async (req, res) => {
 
     if (reviewedBy) {
       if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" })
+      if (!strRegex(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" })
     } 
 
     const reviewData = { bookId, review, rating, reviewedBy, reviewedAt }

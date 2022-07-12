@@ -11,10 +11,8 @@ const isValidObjectId = (objectId) => {
 // 2nd Validator ==>
 
 const objectValue = (value) => {
-  let strRegex = /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
   if (typeof value === "undefined" || value === null || typeof value === "boolean" || typeof value === "number") return false;
   if (typeof value === "string" && value.length === 0) return false;
-  if(!strRegex.test(value)) return false
   return true;
 };
 
@@ -74,6 +72,12 @@ const ratingRegex = (value) => {
     return true;
 }
 
+const strRegex = (value) => {
+  let strRegex = /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
+  if (strRegex.test(value))
+    return true;
+}
+
 
 const isValidISBN =function (ISBN){
   const ISBNRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
@@ -106,19 +110,7 @@ const isValidDate =function(date){
   const isValidDate = /^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/
   return isValidDate.test(date)
 }
-// const isISBN =function(value){
-//   const isISBN = !/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/
-//   return isISBN.test(value)
-// }
-
-  
-
-// const ISBNvalue = (value) => {
-//   if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
-//   if (typeof value === "number" && value.length === 0) return false;
-//   return true;
-// };
 
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex }; 
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex, strRegex }; 
                                                                                                         // EXPORTING THEM
