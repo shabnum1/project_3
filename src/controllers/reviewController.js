@@ -27,6 +27,7 @@ const createReviews = async (req, res) => {
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
 
     if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter valid review!" })
+    if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" })
 
     if (!numberValue(rating)) return res.status(400).send({ status: false, msg: "Please enter rating in correct format!" })
 
@@ -76,16 +77,18 @@ const updateReviews = async function (req, res) {
 
     if (review || review === "") {
       if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })
+      if (!strRegex(review)) return res.status(400).send({ status: false, msg: "Please enter review in correct format!" })
     }
 
     if (rating || rating === "") {
       if (!numberValue(rating)) return res.status(400).send({ status: false, msg: "Please enter rating in correct format!" })
-
       if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })
     } 
 
     if (reviewedBy || reviewedBy === "") {
       if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" })
+      if (!strRegex(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" })
+      
     }
 
     const findBooksbyId = await booksModel.findOne({ _id: bookId, isDeleted: false })
