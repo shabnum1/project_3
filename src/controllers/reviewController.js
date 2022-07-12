@@ -41,10 +41,11 @@ const createReviews = async (req, res) => {
       findBooksbyId.reviews = findBooksbyId.reviews + 1;
 
       await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } })
-
+ 
+      
     }
 
-    res.status(201).send({ status: true, data: reviewCreation })
+    res.status(201).send({ status: true, data: findBooksbyId, reviewData :reviewCreation })
 
   }
 
@@ -77,6 +78,8 @@ const updateReviews = async function (req, res) {
       if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })
     }
 
+    if(!reviewedBy) return reviewedBy = "Guest" 
+
     if (reviewedBy || reviewedBy === "") {
       if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" })
     }
@@ -92,13 +95,14 @@ const updateReviews = async function (req, res) {
       { $set: { review, rating, reviewedBy }, },
       { new: true }
     );
-    return res.status(200).send({ status: true, data: updatedreview });
+    return res.status(200).send({ status: true, data: findBooksbyId,reviewData : updatedreview });
 
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
   }
 };
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  NINTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+
 const deleteReviewbyId = async (req, res) => {
   try {
     const bookId = req.params.bookId

@@ -20,11 +20,11 @@ route.put("/books/:bookId" ,middleware.authentication, booksController.updateBoo
 
 route.delete("/books/:bookId" ,middleware.authentication, booksController.deleteBooksbyId)
 
-route.post("/books/:bookId/review" ,middleware.authentication, reviewController.createReviews)
+route.post("/books/:bookId/review" , reviewController.createReviews)
 
-route.put("/books/:bookId/review/:reviewId" ,middleware.authentication, reviewController.updateReviews)
+route.put("/books/:bookId/review/:reviewId" , reviewController.updateReviews)
 
-route.delete("/books/:bookId/review/:reviewId" ,middleware.authentication, reviewController.deleteReviewbyId)
+route.delete("/books/:bookId/review/:reviewId" , reviewController.deleteReviewbyId)
 
 // route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 
