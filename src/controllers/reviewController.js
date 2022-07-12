@@ -46,7 +46,7 @@ const createReviews = async (req, res) => {
     const reviewCreation = await reviewModel.create(reviewData)
 
     if (reviewCreation) {
-      findBooksbyId.reviews = findBooksbyId.reviews + 1;
+      findBooksbyId.reviews = findBooksbyId.reviews + 1;     // Increasing the reviews
 
       await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } })
  
@@ -125,7 +125,7 @@ const deleteReviewbyId = async (req, res) => {
     const findReview = await reviewModel.findOne({ _id: reviewId, isDeleted: false })    // DB Call
     if (!findReview) { return res.status(404).send({ status: false, msg: "review not found or does not exist!" }) } // DB Validation
 
-    findBooksbyId.reviews = findBooksbyId.reviews - 1;
+    findBooksbyId.reviews = findBooksbyId.reviews - 1;        // Reducing the reviews
 
     let updateReviews = await booksModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $set: { reviews: findBooksbyId.reviews } })
 
