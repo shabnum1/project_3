@@ -1,7 +1,7 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
 const jwt = require("jsonwebtoken");
-const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, booleanValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
+const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
