@@ -122,9 +122,7 @@ const updateBooks = async function (req, res) {
     if (!findBooksbyId) { return res.status(404).send({ status: false, msg: "Books not found or does not exist!" }) }
 
     let token = req.headers["x-api-key"]
-
     let decodedToken = jwt.verify(token, "group66-project3")            // Authorization
-
     if (findBooksbyId.userId != decodedToken.userId) { return res.status(403).send({ status: false, msg: "not authorized!" }) }
 
     const { title, excerpt, releasedAt, ISBN } = req.body;  // Destructuring
@@ -148,7 +146,9 @@ const updateBooks = async function (req, res) {
       if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" })
     }  // 2nd V used above
 
-    if (!isValidISBN(ISBN)) { return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' }) }
+    if (ISBN || ISBN === "") {
+      if (!isValidISBN(ISBN)) return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' })
+    }
 
     let duplicateISBN = await booksModel.findOne({ ISBN })    // DB Call
     if (duplicateISBN) return res.status(400).send({ status: false, msg: "ISBN is already registered!" })  // Duplicate Validation
@@ -178,9 +178,7 @@ const deleteBooksbyId = async (req, res) => {
     if (!findBooksbyId) { return res.status(404).send({ status: false, msg: "Books not found or does not exist!" }) }
 
     let token = req.headers["x-api-key"]
-
     let decodedToken = jwt.verify(token, "group66-project3")          // Authorization
-
     if (findBooksbyId.userId != decodedToken.userId) { return res.status(403).send({ status: false, msg: "not authorized!" }) }
 
     const deletedBooks = await booksModel.findOneAndUpdate(
