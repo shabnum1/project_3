@@ -52,7 +52,7 @@ const createReviews = async (req, res) => {
       
     }
 
-    res.status(201).send({ status: true, data: findBooksbyId, reviewData :reviewCreation })
+    res.status(201).send({ status: true, message: 'Success', data: findBooksbyId, reviewData :reviewCreation })
 
   }
 
@@ -102,7 +102,7 @@ const updateReviews = async function (req, res) {
       { $set: { review, rating, reviewedBy }, },
       { new: true }
     );
-    return res.status(200).send({ status: true, data: findBooksbyId, updatedreview });
+    return res.status(200).send({ status: true, message: 'Success', data: findBooksbyId, updatedreview });
 
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });

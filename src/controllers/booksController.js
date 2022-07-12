@@ -46,7 +46,7 @@ const createBooks = async (req, res) => {
 
     const bookCreation = await booksModel.create(req.body)
 
-    res.status(201).send({ status: true, data: bookCreation })
+    res.status(201).send({ status: true, message: 'Success', data: bookCreation })
 
   }
 
@@ -83,7 +83,7 @@ const getBooks = async (req, res) => {
 
     const sortedBooks = bookList.sort((a, b) => a.title.localeCompare(b.title))
 
-    res.status(200).send({ status: true, data: sortedBooks })
+    res.status(200).send({ status: true, message: 'Books list', data: sortedBooks })
 
   }
   catch (error) {
@@ -157,7 +157,7 @@ const updateBooks = async function (req, res) {
       { $set: { title, excerpt, releasedAt, ISBN } },
       { new: true }
     );
-    return res.status(200).send({ status: true, data: updatedBooks });
+    return res.status(200).send({ status: true, message: 'Success', data: updatedBooks });
 
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
