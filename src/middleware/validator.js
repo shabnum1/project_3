@@ -11,8 +11,10 @@ const isValidObjectId = (objectId) => {
 // 2nd Validator ==>
 
 const objectValue = (value) => {
-  if (typeof value === "undefined" || value === null || typeof value === "boolean") return false;
+  let strRegex = /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
+  if (typeof value === "undefined" || value === null || typeof value === "boolean" || typeof value === "number") return false;
   if (typeof value === "string" && value.length === 0) return false;
+  if(!strRegex.test(value)) return false
   return true;
 };
 

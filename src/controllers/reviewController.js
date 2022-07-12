@@ -27,11 +27,17 @@ const createReviews = async (req, res) => {
 
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
 
-    if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter review!" })
+    if (!objectValue(review)) return res.status(400).send({ status: false, msg: "Please enter valid review!" })
 
     if (!numberValue(rating)) return res.status(400).send({ status: false, msg: "Please enter rating in correct format!" })
 
     if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })
+
+    if(!reviewedBy) {reviewedBy = "Guest" }
+
+    if (reviewedBy) {
+      if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" })
+    } 
 
     const reviewData = { bookId, review, rating, reviewedBy, reviewedAt }
 
@@ -76,9 +82,7 @@ const updateReviews = async function (req, res) {
       if (!numberValue(rating)) return res.status(400).send({ status: false, msg: "Please enter rating in correct format!" })
 
       if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })
-    }
-
-    if(!reviewedBy) return reviewedBy = "Guest" 
+    } 
 
     if (reviewedBy || reviewedBy === "") {
       if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" })
@@ -95,7 +99,7 @@ const updateReviews = async function (req, res) {
       { $set: { review, rating, reviewedBy }, },
       { new: true }
     );
-    return res.status(200).send({ status: true, data: findBooksbyId,reviewData : updatedreview });
+    return res.status(200).send({ status: true, data: findBooksbyId, updatedreview });
 
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
