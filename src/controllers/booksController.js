@@ -188,7 +188,7 @@ const deleteBooksbyId = async (req, res) => {
       { $set: { isDeleted: true, deletedAt: new Date() } },
       { new: true })
 
-    res.status(200).send({ status: true, message: "Book deleted successfullly.", data: deletedBooks })
+    res.status(200).send({ status: true, message: "Book deleted successfully!"})
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
   }

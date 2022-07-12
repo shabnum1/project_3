@@ -4,7 +4,6 @@ const userController = require("../controllers/userController");
 const booksController = require("../controllers/booksController");
 const reviewController = require("../controllers/reviewController");
 const middleware = require("../middleware/auth")
-// const internController = require("../controllers/booksController");
 
 route.post("/register" , userController.createUser)
 
@@ -25,7 +24,5 @@ route.post("/books/:bookId/review" , reviewController.createReviews)
 route.put("/books/:bookId/review/:reviewId" , reviewController.updateReviews)
 
 route.delete("/books/:bookId/review/:reviewId" , reviewController.deleteReviewbyId)
-
-// route.get("/functionup/collegeDetails" , internController.getCollegeDetails)
 
 module.exports = route

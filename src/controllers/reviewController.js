@@ -35,7 +35,7 @@ const createReviews = async (req, res) => {
     if(!reviewedBy) {reviewedBy = "Guest" }
 
     if (reviewedBy) {
-      if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name!" })
+      if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" })
     } 
 
     const reviewData = { bookId, review, rating, reviewedBy, reviewedAt }
@@ -130,7 +130,7 @@ const deleteReviewbyId = async (req, res) => {
       { $set: { isDeleted: true, deletedAt: new Date() } },
       { new: true })
 
-    return res.status(200).send({ status: true, data: deletedreview });
+    return res.status(200).send({ status: true,message: "Review deleted successfully!", data: findBooksbyId });
 
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
