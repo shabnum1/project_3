@@ -33,7 +33,7 @@ const createReviews = async (req, res) => {
 
     if (!ratingRegex(rating)) return res.status(400).send({ status: false, msg: "rating is invalid!" })   // 10th V used here
 
-    if(!reviewedBy) {reviewedBy = "Guest" }
+    if(reviewedBy === "") {reviewedBy = "Guest" }
 
     if (reviewedBy) {     // Nested If used here
       if (!objectValue(reviewedBy)) return res.status(400).send({ status: false, msg: "Please enter reviewer's name correctly!" }) 
