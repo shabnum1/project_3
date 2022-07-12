@@ -144,8 +144,9 @@ const updateBooks = async function (req, res) {
     }        // 2nd V used above
 
     if (releasedAt || releasedAt === "") {    // Nested If used here
-      if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" })
-    }  // 2nd V used above
+      if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" }) // 2nd V used here
+      if (!isValidDate(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt in the right format(YYYY-MM-DD)!" })      // 16th V used above 
+    }  
 
     if (ISBN || ISBN === "") {
       if (!isValidISBN(ISBN)) return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' })
