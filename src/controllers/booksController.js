@@ -135,7 +135,7 @@ const updateBooks = async function (req, res) {
 
     if (title || title === "") {          // Nested If used here
       if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
-    }        // 2nd V used abpve
+    }        // 2nd V used above
 
     let duplicateTitle = await booksModel.findOne({ title })
     if (duplicateTitle) return res.status(400).send({ status: false, msg: "title is already in use!" })    // Duplicate Validation
