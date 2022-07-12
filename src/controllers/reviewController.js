@@ -1,9 +1,8 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
-const jwt = require("jsonwebtoken");
 const moment = require("moment")
-const { objectValue, keyValue, numberValue, isValidDate, ratingRegex, isValidObjectId } = require("../middleware/validator");  // IMPORTING VALIDATORS
-const { findOneAndUpdate } = require("../models/booksModel");
+const { objectValue, keyValue, numberValue, ratingRegex, isValidObjectId } = require("../middleware/validator");  // IMPORTING VALIDATORS
+
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  EIGHTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
 
