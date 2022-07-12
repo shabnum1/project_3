@@ -9,7 +9,7 @@ route.post("/register" , userController.createUser)
 
 route.post("/login" , userController.loginUser)
 
-route.post("/books" ,middleware.authentication, middleware.authorization, booksController.createBooks)
+route.post("/books" ,middleware.authentication, booksController.createBooks)
 
 route.get("/books" ,middleware.authentication, booksController.getBooks)
 

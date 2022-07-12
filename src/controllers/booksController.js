@@ -44,6 +44,10 @@ const createBooks = async (req, res) => {
       if (!numberValue(reviews)) return res.status(400).send({ status: false, msg: "Please enter review!" })    // 15th V used here
     }
 
+    let token = req.headers["x-api-key"]
+    let decodedToken = jwt.verify(token, "group66-project3")          // Authorization
+    if (userId != decodedToken.userId) { return res.status(403).send({ status: false, msg: "not authorized!" }) }
+
     const bookCreation = await booksModel.create(req.body)
 
     res.status(201).send({ status: true, message: 'Success', data: bookCreation })
