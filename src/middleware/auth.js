@@ -1,17 +1,14 @@
-const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
-const booksModel = require("../models/booksModel");
-const userModel = require("../models/userModel");
+const jwt = require("jsonwebtoken");    // Importing
 
 //======================================================1st Middleware===================================================================//
 
-const authentication = async function (req, res, next) {
+const authentication = async function (req, res, next) {                  // Authentication
     try {
         let token = req.headers["x-api-key"]
 
-        if (!token) return res.status(400).send({ status: false, msg: "No Token Found" })
+        if (!token) return res.status(400).send({ status: false, msg: "No Token Found!" })
         let decodedToken = jwt.verify(token, "group66-project3")
-        if (!decodedToken) return res.status(401).send({ status: false, msg: "invalid token" })
+        if (!decodedToken) return res.status(401).send({ status: false, msg: "Invalid token!" })
 
         next()
 
@@ -21,24 +18,27 @@ const authentication = async function (req, res, next) {
     }
 
 }
-const authorization = async function (req, res, next) {
+
+//========================================================2nd Middleware===================================================================//
+
+const authorization = async function (req, res, next) {                         // Authorization
 
     try {
 
         let token = req.headers["x-api-key"]
 
-        if (!token) return res.status(400).send({ status: false, msg: "No Token Found" })
+        if (!token) return res.status(400).send({ status: false, msg: "No Token Found!" })
 
         let decodedToken = jwt.verify(token, "group66-project3")
 
-        if (!decodedToken) return res.status(401).send({ status: false, msg: "invalid token" })
+        if (!decodedToken) return res.status(401).send({ status: false, msg: "Invalid token!" })
 
         let usersId = decodedToken.userId
         let bodyData = req.body.userId
 
         console.log(bodyData)
 
-        if (usersId != bodyData) return res.status(403).send({ status: false, msg: "you are not autherized to do" })
+        if (usersId != bodyData) return res.status(403).send({ status: false, msg: "Not Authorized!" })
 
         next()
     }
@@ -48,4 +48,4 @@ const authorization = async function (req, res, next) {
 }
 
 
-module.exports = { authentication, authorization }
+module.exports = { authentication, authorization }     // Exporting them

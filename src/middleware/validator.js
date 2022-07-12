@@ -60,11 +60,15 @@ const passwordRegex = (value) => {
     return true;
 }
 
+// 9th Validator ==>
+
 const pincodeRegex = (value) => {
   let pincodeRegex = /^[1-9][0-9]{5}$/;
   if (pincodeRegex.test(value))
     return true;
 }
+
+// 10th Validator ==>
 
 const ratingRegex = (value) => {
   let ratingRegex = /^[1-5]{1}$/;
@@ -72,18 +76,22 @@ const ratingRegex = (value) => {
     return true;
 }
 
+// 11th Validator ==>
+
 const strRegex = (value) => {
   let strRegex = /^[A-Za-z\s]{0,}[\.,'-]{0,1}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}[\.,'-]{0,}[A-Za-z\s]{0,}$/;
   if (strRegex.test(value))
     return true;
 }
 
+// 12th Validator ==>
 
 const isValidISBN =function (ISBN){
   const ISBNRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
   return ISBNRegex.test(ISBN)
 }
 
+// 13th Validator ==>
 
 const isValidArray = (value) => {
   if (Array.isArray(value)) {
@@ -94,11 +102,15 @@ const isValidArray = (value) => {
   } else { return false }
 }
 
+// 14th Validator ==>
+
 const booleanValue = (value) => {
   if (typeof value === "undefined" || typeof value === "string" || value === null || typeof value === "number" || typeof value === true) return false;
   if (typeof value === false && value.length === 0) return false;
   return true;
 };
+
+// 15th Validator ==>
 
 const numberValue = (value) => {
   if (typeof value === "undefined" || value === null || typeof value === "boolean" || typeof value === "string") return false;
@@ -106,11 +118,13 @@ const numberValue = (value) => {
   return true;
 };
 
+// 16th Validator ==>
+
 const isValidDate =function(date){
   const isValidDate = /^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/
   return isValidDate.test(date)
 }
 
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex, strRegex }; 
-                                                                                                        // EXPORTING THEM
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex, strRegex };     // EXPORTING THEM
+                                                                                                        

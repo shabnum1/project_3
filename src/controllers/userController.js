@@ -14,49 +14,51 @@ const createUser = async (req, res) => {
 
         let { title, name, email, phone, password, address } = req.body  // Destructuring
 
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })  // 3rd V used here
 
-        if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" })
+        if (!objectValue(title)) return res.status(400).send({ status: false, msg: "Please enter title!" }) // 2nd V used here
 
-        if (!isValidTitle(title)) return res.status(400).send({ status: false, msg: "Title must be Mr/Mrs/Miss" })
+        if (!isValidTitle(title)) return res.status(400).send({ status: false, msg: "Title must be Mr/Mrs/Miss" })  // 5th V used here
 
-        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "Please enter name!" })
+        if (!objectValue(name)) return res.status(400).send({ status: false, msg: "Please enter name!" })  // 2nd V used here
 
-        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name is invalid!" })
+        if (!nameRegex(name)) return res.status(400).send({ status: false, msg: "name is invalid!" })  // 4th V used here
 
-        if (!objectValue(phone)) return res.status(400).send({ status: false, msg: "Please enter phone number!" })
+        if (!objectValue(phone)) return res.status(400).send({ status: false, msg: "Please enter phone number!" })  // 2nd V used here
 
-        if (!mobileRegex(phone)) return res.status(400).send({ status: false, msg: "phone number is invalid!" })
+        if (!mobileRegex(phone)) return res.status(400).send({ status: false, msg: "phone number is invalid!" })  // 7th V used here
 
-        let duplicatePhone = await userModel.findOne({ phone })
+        let duplicatePhone = await userModel.findOne({ phone })        // DB Call
 
-        if (duplicatePhone) return res.status(400).send({ status: false, msg: "phone number is already registered!" })
+        if (duplicatePhone) return res.status(400).send({ status: false, msg: "phone number is already registered!" }) //Duplicate Validation 
 
-        if (!objectValue(email)) return res.status(400).send({ status: false, msg: "Please enter email!" })
+        if (!objectValue(email)) return res.status(400).send({ status: false, msg: "Please enter email!" })   // 2nd V used here
 
-        if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })
+        if (!emailRegex(email)) return res.status(400).send({ status: false, msg: "email is invalid!" })    // 6th V used here
 
         let duplicateEmail = await userModel.findOne({ email })
 
-        if (duplicateEmail) return res.status(400).send({ status: false, msg: "email is already registered!" })
+        if (duplicateEmail) return res.status(400).send({ status: false, msg: "email is already registered!" })  // Duplicate Validation
 
-        if (!objectValue(password)) return res.status(400).send({ status: false, msg: "Please enter password!" })
+        if (!objectValue(password)) return res.status(400).send({ status: false, msg: "Please enter password!" })  // 2nd V used here
 
-        if (!passwordRegex(password)) return res.status(400).send({ status: false, msg: "Password must be 8 to 15 characters long and must be in alphabets and numbers!" })
+        if (!passwordRegex(password)) return res.status(400).send({ status: false, msg: "Password must be 8 to 15 characters long and must be in alphabets and numbers!" })                      // 8th V used here
 
-        if (address) {
-            if (!keyValue(address)) return res.status(400).send({ status: false, msg: "Please enter your address!" })
+        if (address) {              // Nested If used here
+            if (!keyValue(address)) return res.status(400).send({ status: false, msg: "Please enter your address!" })   // 3rd V used here
 
             if (req.body.address.street || req.body.address.street === "") {
-                if (!objectValue(req.body.address.street)) return res.status(400).send({ status: false, msg: "Please enter your street!" })
+                if (!objectValue(req.body.address.street)) return res.status(400).send({ status: false, msg: "Please enter your street!" }) // 2nd V used here
             }
 
             if (req.body.address.city || req.body.address.city === "") {
-                if (!objectValue(req.body.address.city)) return res.status(400).send({ status: false, msg: "Please enter your city!" })
+                if (!objectValue(req.body.address.city)) return res.status(400).send({ status: false, msg: "Please enter your city!" }) 
+                // 2nd V used above
             }
 
             if (req.body.address.pincode || req.body.address.pincode === "") {
-                if (!pincodeRegex(req.body.address.pincode)) return res.status(400).send({ status: false, msg: "pincode is invalid!" })
+                if (!pincodeRegex(req.body.address.pincode)) return res.status(400).send({ status: false, msg: "pincode is invalid!" }) 
+                // 2nd V used above
             }
         }
 
@@ -76,25 +78,25 @@ const loginUser = async function (req, res) {
     try {
         let { email, password } = req.body  // Destructuring
 
-        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide email and password!" })
+        if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide email and password!" })  // 3rd V used here
 
-        if (!email) return res.status(400).send({ status: false, msg: "email is not correct!" })
-        if (!password) return res.status(400).send({ status: false, msg: "password is not correct!" })
+        if (!email) return res.status(400).send({ status: false, msg: "email is not correct!" })    // Email Validation
+        if (!password) return res.status(400).send({ status: false, msg: "password is not correct!" })   // Passsword Validation
 
-        let user = await userModel.findOne({ email: email, password: password })
+        let user = await userModel.findOne({ email: email, password: password })    // DB Call
 
         if (!user) { return res.status(404).send({ status: false, msg: "email or the password is invalid!" }) }
 
 
-        let token = jwt.sign(
+        let token = jwt.sign(                         // JWT Creation
             {
                 userId: user._id.toString(),
-                group: "sixty-six",
+                group: "sixty-six",                                      // Payload
                 project: "BooksManagement",
                 iat: Math.floor(Date.now() / 1000),
                 exp: Math.floor(Date.now() / 1000) + 65 * 60 * 60
             },
-            "group66-project3"
+            "group66-project3"              // Secret Key 
         )
         return res.status(201).send({ status: true, data: token })
     }
@@ -105,4 +107,4 @@ const loginUser = async function (req, res) {
 }
 
 
-module.exports = { createUser, loginUser }  // Destructuring
+module.exports = { createUser, loginUser }  // Destructuring & Exporting
