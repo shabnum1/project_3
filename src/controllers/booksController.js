@@ -148,7 +148,7 @@ const updateBooks = async function (req, res) {
 
     if (ISBN || ISBN === "") {
       if (!isValidISBN(ISBN)) return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' })
-    }
+    }     // 12th V used above
 
     let duplicateISBN = await booksModel.findOne({ ISBN })    // DB Call
     if (duplicateISBN) return res.status(400).send({ status: false, msg: "ISBN is already registered!" })  // Duplicate Validation
