@@ -3,7 +3,7 @@ const reviewModel = require("../models/reviewModel")
 const jwt = require("jsonwebtoken");
 const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  THIRD API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//------------------------------------------------------  THIRD API  ------------------------------------------------------------------\\
 
 // V = Validator 
 
@@ -56,7 +56,7 @@ const createBooks = async (req, res) => {
 
 }
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<=========================== FOURTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//------------------------------------------------------  FOURTH API  ------------------------------------------------------------------\\
 
 const getBooks = async (req, res) => {
   try {
@@ -91,7 +91,7 @@ const getBooks = async (req, res) => {
   }
 };
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<============================ FIFTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//------------------------------------------------------  FIFTH API  ------------------------------------------------------------------\\
 
 const getBooksbyId = async (req, res) => {
 
@@ -112,7 +112,8 @@ const getBooksbyId = async (req, res) => {
 }
 
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<============================ SIXTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//------------------------------------------------------  SIXTH API  ------------------------------------------------------------------\\
+
 
 
 const updateBooks = async function (req, res) {
@@ -131,7 +132,7 @@ const updateBooks = async function (req, res) {
 
     if (findBooksbyId.userId != decodedToken.userId) { return res.status(403).send({ status: false, msg: "not authorized!" }) }
 
-    const { title, excerpt, releasedAt, ISBN } = req.body;
+    const { title, excerpt, releasedAt, ISBN } = req.body;  // Destructuring
 
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide something to update!" });
 
@@ -163,7 +164,7 @@ const updateBooks = async function (req, res) {
   }
 };
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<========================== SEVENTH API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//------------------------------------------------------  SEVENTH API  ------------------------------------------------------------------\\
 
 const deleteBooksbyId = async (req, res) => {
 

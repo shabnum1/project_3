@@ -4,14 +4,15 @@ const jwt = require('jsonwebtoken')
 const { objectValue, nameRegex, keyValue, isValidTitle, mobileRegex, emailRegex, passwordRegex, pincodeRegex } = require("../middleware/validator"); // IMPORTING VALIDATORS
 
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<===========================  FIRST API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//-------------------------------------------------------  FIRST API  ---------------------------------------------------------------------\\
+
 
 // V = Validator 
 
 const createUser = async (req, res) => {
     try {
 
-        let { title, name, email, phone, password, address } = req.body
+        let { title, name, email, phone, password, address } = req.body  // Destructuring
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })
 
@@ -69,11 +70,11 @@ const createUser = async (req, res) => {
 
 }
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<==========================  SECOND API  ===========================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\\
+//-------------------------------------------------------  SECOND API  ---------------------------------------------------------------------\\
 
 const loginUser = async function (req, res) {
     try {
-        let { email, password } = req.body
+        let { email, password } = req.body  // Destructuring
 
         if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide email and password!" })
 
@@ -104,4 +105,4 @@ const loginUser = async function (req, res) {
 }
 
 
-module.exports = { createUser, loginUser }
+module.exports = { createUser, loginUser }  // Destructuring
