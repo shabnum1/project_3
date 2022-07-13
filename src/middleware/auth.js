@@ -7,11 +7,15 @@ const authentication = async function (req, res, next) {                  // Aut
         let token = req.headers["x-api-key"]
 
         if (!token) return res.status(400).send({ status: false, msg: "No Token Found!" })
-        let decodedToken = jwt.verify(token, "group66-project3")
+        let decodedToken = jwt.verify(token, "group66-project3", (err, decoded) => {
+            if (err) {
+                res.status(400).send({ status: false, Error: err.message })
+            } else {
+                return decoded
+            }
+        })
         if (!decodedToken) return res.status(401).send({ status: false, msg: "Invalid token!" })
-        // if (Date.now() > (decodedToken.token.exp) * 1000) { //setting time expiration message
-        //     return res.status(403).send({ status: false, message: "Session expired! Please login again." })
-        //     }
+
         next()
 
     } catch (err) {
