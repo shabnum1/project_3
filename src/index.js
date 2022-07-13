@@ -6,8 +6,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
 mongoose.connect("mongodb+srv://saurabhshete281:JBmRPjzC58VOejIX@cluster0.jih1tjw.mongodb.net/group66Database-DB", {
     useNewUrlParser: true
 })
