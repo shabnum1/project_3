@@ -86,6 +86,7 @@ const getBooks = async (req, res) => {
     if (bookList.length === 0) return res.status(400).send({ status: false, msg: "no book found!" })  // DB Validation
 
     const sortedBooks = bookList.sort((a, b) => a.title.localeCompare(b.title))  // Sorting in Alphabetical Order
+    // The localeCompare() method returns a number indicating whether a reference string comes before, or after, or is the same as the given string in sort order.
 
     res.status(200).send({ status: true, message: 'Books list', data: sortedBooks })
 
