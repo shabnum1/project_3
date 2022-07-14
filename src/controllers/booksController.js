@@ -1,7 +1,7 @@
 const booksModel = require("../models/booksModel");
 const reviewModel = require("../models/reviewModel")
 const jwt = require("jsonwebtoken");
-const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId, strRegex } = require("../middleware/validator")  // IMPORTING VALIDATORS
+const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDate, isValidObjectId, strRegex, urlRegex } = require("../middleware/validator")  // IMPORTING VALIDATORS
 
 //------------------------------------------------------  THIRD API  ------------------------------------------------------------------\\
 
@@ -10,7 +10,7 @@ const { objectValue, keyValue, isValidISBN, isValidArray, numberValue, isValidDa
 const createBooks = async (req, res) => {
 
   try {
-    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt, isDeleted, reviews } = req.body  // Destructuring
+    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt, bookCover, isDeleted, reviews } = req.body  // Destructuring
 
     if (!keyValue(req.body)) return res.status(400).send({ status: false, msg: "Please provide details!" })  // 3rd V used here
 
@@ -35,6 +35,8 @@ const createBooks = async (req, res) => {
     if (!strRegex(category)) return res.status(400).send({ status: false, msg: "Please enter category in Alphabets only!" })  // 14th V used here
 
     if (!isValidArray(subcategory)) return res.status(400).send({ status: false, msg: "Please enter subcategory!" }) // 13th V used here 
+
+    if (!urlRegex(bookCover)) return res.status(400).send({ status: false, msg: "Please enter valid link!" }) // 17th V used here 
 
     if (isDeleted === true) return res.status(400).send({ status: false, msg: "isDeleted must be false!" })  // Boolean Validation
 
@@ -151,7 +153,7 @@ const updateBooks = async function (req, res) {
     if (releasedAt || releasedAt === "") {    // Nested If used here
       if (!objectValue(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt!" }) // 2nd V used here
       if (!isValidDate(releasedAt)) return res.status(400).send({ status: false, msg: "Please enter releasedAt in the right format(YYYY-MM-DD)!" })      // 16th V used above 
-    }  
+    }
 
     if (ISBN || ISBN === "") {
       if (!isValidISBN(ISBN)) return res.status(400).send({ status: false, message: 'Please provide a valid ISBN of 13 digits!' })

@@ -125,6 +125,14 @@ const isValidDate =function(date){
   return isValidDate.test(date)
 }
 
+// 17th Validator ==>
 
-module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex, strRegex };     // EXPORTING THEM
+const urlRegex = (value) => {
+  let urlRegex = /(https|http?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i;
+  if (urlRegex.test(value))
+    return true;
+}
+
+
+module.exports = { isValidObjectId, objectValue, nameRegex, emailRegex, keyValue, mobileRegex, passwordRegex, isValidTitle, pincodeRegex, isValidISBN, isValidArray, booleanValue, numberValue, isValidDate, ratingRegex, strRegex, urlRegex };     // EXPORTING THEM
                                                                                                         
