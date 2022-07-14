@@ -126,7 +126,7 @@ const isValidDate =function(date){
 }
 
 // 17th Validator ==>
-
+//to upload book cover link 
 const urlRegex = (value) => {
   let urlRegex = /(https|http?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i;
   if (urlRegex.test(value))
